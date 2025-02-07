@@ -4,8 +4,6 @@
 
 Choose your preferred language:
 
-.
-
 {% tabs %}
 {% tab title="Rust" %}
 ```toml
@@ -20,25 +18,11 @@ autonomi = "0.3.1"
 pip install autonomi
 ```
 {% endtab %}
-
-{% tab title="Node.js" %}
-```bash
-# Note: Package not yet published to npm
-# Clone the repository and build from source
-git clone https://github.com/maidsafe/autonomi.git
-cd autonomi
-npm install
-```
-{% endtab %}
 {% endtabs %}
-
-.
 
 ## Client Initialization
 
 Initialize a client in read-only mode for browsing data, or with write capabilities for full access:
-
-.
 
 {% tabs %}
 {% tab title="Rust" %}
@@ -68,26 +52,7 @@ config = {
 client = Client.init_with_config(config)
 ```
 {% endtab %}
-
-{% tab title="Node.js" %}
-```typescript
-import { Client } from 'autonomi';
-
-// Initialize a read-only client
-const client = await Client.initReadOnly();
-
-// Or initialize with write capabilities and configuration
-const config = {
-    // Add your configuration here
-};
-const client = await Client.initWithConfig(config);
-```
-{% endtab %}
 {% endtabs %}
-
-.
-
-
 
 ## Core Data Types
 
@@ -96,8 +61,6 @@ Autonomi provides four fundamental data types that serve as building blocks for 
 ### 1. Chunk
 
 Immutable, quantum-secure encrypted data blocks:
-
-.
 
 {% tabs %}
 {% tab title="Rust" %}
@@ -135,33 +98,11 @@ metadata = client.get_chunk_metadata(chunk.address)
 print(f"Size: {metadata.size}")
 ```
 {% endtab %}
-
-{% tab title="Node.js" %}
-```typescript
-import { Chunk } from 'autonomi';
-
-// Store raw data as a chunk
-const data = Buffer.from('Hello, World!');
-const chunk = await client.storeChunk(data);
-
-// Retrieve chunk data
-const retrieved = await client.getChunk(chunk.address);
-assert(Buffer.compare(data, retrieved) === 0);
-
-// Get chunk metadata
-const metadata = await client.getChunkMetadata(chunk.address);
-console.log(`Size: ${metadata.size}`);
-```
-{% endtab %}
 {% endtabs %}
-
-.
 
 ### 2. Pointer
 
 Mutable references with version tracking:
-
-.
 
 {% tabs %}
 {% tab title="Rust" %}
@@ -201,36 +142,11 @@ metadata = client.get_pointer_metadata(pointer.address)
 print(f"Version: {metadata.version}")
 ```
 {% endtab %}
-
-{% tab title="Node.js" %}
-```typescript
-import { Pointer } from 'autonomi';
-
-// Create a pointer to some data
-const pointer = await client.createPointer(targetAddress);
-
-// Update pointer target
-await client.updatePointer(pointer.address, newTargetAddress);
-
-// Resolve pointer to get current target
-const target = await client.resolvePointer(pointer.address);
-
-// Get pointer metadata and version
-const metadata = await client.getPointerMetadata(pointer.address);
-console.log(`Version: ${metadata.version}`);
-```
-{% endtab %}
 {% endtabs %}
-
-.
-
-
 
 ### 3. GraphEntry
 
 Decentralized Graph structures for linked data:
-
-.
 
 {% tabs %}
 {% tab title="Rust" %}
@@ -275,41 +191,7 @@ for entry in history:
     print(f"Version {entry.version}: {entry.data}")
 ```
 {% endtab %}
-
-{% tab title="Node.js" %}
-```typescript
-import { GraphEntry } from 'autonomi';
-
-// Create a new graph
-const entry = await client.createGraphEntry();
-
-// Append items
-await client.appendToGraph(entry.address, item1);
-await client.appendToGraph(entry.address, item2);
-
-// Read graph contents
-const items = await client.getGraph(entry.address);
-
-// Get graph history
-const history = await client.getGraphHistory(entry.address);
-for (const entry of history) {
-    console.log(`Version ${entry.version}: ${entry.data}`);
-}
-
-// Check for forks
-const forks = await client.detectForks(entry.address);
-if (!forks) {
-    console.log('No forks detected');
-} else {
-    handleForks(forks.branches);
-}
-```
-{% endtab %}
 {% endtabs %}
-
-.
-
-
 
 ### 4. ScratchPad
 
@@ -351,25 +233,6 @@ current = client.get_scratchpad(pad.address)
 # Get metadata
 metadata = client.get_scratchpad_metadata(pad.address)
 print(f"Updates: {metadata.update_counter}")
-```
-{% endtab %}
-
-{% tab title="Node.js" %}
-```typescript
-import { ScratchPad, ContentType } from 'autonomi';
-
-// Create a scratchpad
-const pad = await client.createScratchpad(ContentType.UserSettings);
-
-// Update with data
-await client.updateScratchpad(pad.address, settingsData);
-
-// Read current data
-const current = await client.getScratchpad(pad.address);
-
-// Get metadata
-const metadata = await client.getScratchpadMetadata(pad.address);
-console.log(`Updates: ${metadata.updateCounter}`);
 ```
 {% endtab %}
 {% endtabs %}
@@ -503,38 +366,6 @@ except Exception as e:
     handle_other_error(e)
 ```
 {% endtab %}
-
-{% tab title="Node.js" %}
-```typescript
-import { ChunkError, PointerError } from 'autonomi/errors';
-
-// Handle chunk operations
-try {
-    const data = await client.getChunk(address);
-    processData(data);
-} catch (error) {
-    if (error instanceof ChunkError.NotFound) {
-        handleMissing();
-    } else if (error instanceof ChunkError.NetworkError) {
-        handleNetworkError(error);
-    } else {
-        handleOtherError(error);
-    }
-}
-
-// Handle pointer updates
-try {
-    await client.updatePointer(address, newTarget);
-    console.log('Update successful');
-} catch (error) {
-    if (error instanceof PointerError.VersionConflict) {
-        handleConflict();
-    } else {
-        handleOtherError(error);
-    }
-}
-```
-{% endtab %}
 {% endtabs %}
 
 ## Advanced Usage
@@ -577,23 +408,6 @@ pad = client.create_scratchpad(ContentType.CUSTOM("MyData"))
 client.update_scratchpad(pad.address, data)
 ```
 {% endtab %}
-
-{% tab title="Node.js" %}
-```typescript
-interface MyData {
-    field1: string;
-    field2: number;
-}
-
-// Store custom type in a scratchpad
-const data: MyData = {
-    field1: 'test',
-    field2: 42
-};
-const pad = await client.createScratchpad(ContentType.Custom('MyData'));
-await client.updateScratchpad(pad.address, data);
-```
-{% endtab %}
 {% endtabs %}
 
 ### Encryption
@@ -628,22 +442,6 @@ client.update_scratchpad(pad.address, encrypted)
 # Decrypt retrieved data
 encrypted = client.get_scratchpad(pad.address)
 decrypted = decrypt_aes(encrypted, key)
-```
-{% endtab %}
-
-{% tab title="Node.js" %}
-```typescript
-import { encrypt, decrypt, generateKey } from 'autonomi/crypto';
-
-// Encrypt data before storage
-const key = await generateAesKey();
-const encrypted = await encryptAes(data, key);
-const pad = await client.createScratchpad(ContentType.Encrypted);
-await client.updateScratchpad(pad.address, encrypted);
-
-// Decrypt retrieved data
-const encrypted = await client.getScratchpad(pad.address);
-const decrypted = await decryptAes(encrypted, key);
 ```
 {% endtab %}
 {% endtabs %}
@@ -699,23 +497,9 @@ class Client:
     def update_pointer(self, address: Address, target: Address) -> None: ...
 ```
 {% endtab %}
-
-{% tab title="Node.js" %}
-```typescript
-import { Address, Data, Metadata } from 'autonomi/types';
-
-interface Client {
-    storeChunk(data: Buffer): Promise<Address>;
-    getChunk(address: Address): Promise<Buffer>;
-    createPointer(target: Address): Promise<Pointer>;
-    updatePointer(address: Address, target: Address): Promise<void>;
-}
-```
-{% endtab %}
 {% endtabs %}
 
 ## Further Reading
 
 * [Data Types Guide](../../core-concepts/data_types.md)
-* [Client Modes Guide](broken-reference)
 * [Local Network Setup](../../how-to-guides/local_network.md)
