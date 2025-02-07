@@ -8,9 +8,9 @@
 
 ## Core Concepts
 
-* [Data Types Guide](core-concepts/data_types.md)
-* [Client Modes Guide](core-concepts/client_modes.md)
 * [Data Storage](core-concepts/data_storage.md)
+* [Data Types Guide](core-concepts/data_types.md) <!-- human written -->
+* [BLS Keys](api-reference/autonomi-client/bls_keys.md) <!-- human written -->
 
 ## How To Guides
 
@@ -25,7 +25,11 @@
 
 * [API Reference Overview](api-reference/index.md)
 * [Client API](api-reference/autonomi-client/README.md)
-  * [Data Types Reference](api-reference/autonomi-client/data_types.md)
+  * [Data Types Reference](core-concepts/data_types.md)  <!-- human written -->
+    * [Chunks](api-reference/autonomi-client/data_types/chunk.md)  <!-- human written -->
+    * [Pointers](api-reference/autonomi-client/data_types/pointer.md)  <!-- human written -->
+    * [Scratchpads](api-reference/autonomi-client/data_types/scratchpad.md)  <!-- human written -->
+    * [GraphEntries](api-reference/autonomi-client/data_types/graph_entry.md)  <!-- human written -->
   * [Error Handling Reference](api-reference/autonomi-client/errors.md)
 * [Node API](api-reference/ant-node/README.md)
   * [Node Configuration](api-reference/ant-node/configuration.md)
