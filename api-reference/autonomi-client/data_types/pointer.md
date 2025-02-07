@@ -2,7 +2,7 @@
 
 Pointers are native data types in the Autonomi Network that provide an indirection mechanism for referencing to any data. 
 
-* **key-addressed:** Derived from a BLS public key
+* **key-addressed:** Network address is derived from a BLS public key
 * **Generic target:** Can reference any native data type including pointers
 * **Pay-once, free updates:** Unlimited updates for free  
 * **Versioned & signed:** Includes a version counter and cryptographically verifiable signatures
