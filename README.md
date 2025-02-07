@@ -11,7 +11,6 @@ Autonomi is a decentralised data and communications platform designed to provide
 * [Installation Guide](getting-started/installation.md)
 * Core Concepts:
   * [Data Types](core-concepts/data_types.md) - Understanding the fundamental data structures
-  * [Client Modes](core-concepts/client_modes.md) - Different operational modes of the client
   * [Data Storage](core-concepts/data_storage.md) - How data is stored and retrieved
   * [Local Network Setup](how-to-guides/local_network.md) - Setting up a local development environment
 
