@@ -26,16 +26,6 @@ autonomi = "0.3.1"
 pip install autonomi
 ```
 {% endtab %}
-
-{% tab title="Node.js" %}
-```bash
-# Note: Package not yet published to npm
-# Clone the repository and build from source
-git clone https://github.com/maidsafe/autonomi.git
-cd autonomi
-npm install
-```
-{% endtab %}
 {% endtabs %}
 
 ### Ant Node
@@ -109,15 +99,6 @@ from autonomi import Client
 
 client = Client.init_read_only()
 print('Client initialized successfully')
-```
-{% endtab %}
-
-{% tab title="Node.js" %}
-```typescript
-import { Client } from 'autonomi';
-
-const client = await Client.initReadOnly();
-console.log('Client initialized successfully');
 ```
 {% endtab %}
 {% endtabs %}

@@ -54,24 +54,6 @@ async def store_encrypted_data(data: bytes):
     print("Data retrieved successfully")
 ```
 {% endtab %}
-
-{% tab title="Node.js" %}
-```rust
-import { Client } from '@autonomi/client';
-
-async function storeEncryptedData(data: Uint8Array) {
-    const client = new Client();
-
-    // Data is automatically self-encrypted when stored
-    const address = await client.data_put_public(data);
-    console.log(`Data stored at: ${address}`);
-
-    // Retrieve and decrypt data
-    const retrieved = await client.data_get_public(address);
-    console.log('Data retrieved successfully');
-}
-```
-{% endtab %}
 {% endtabs %}
 
 \`
@@ -145,32 +127,6 @@ async def use_scratchpad():
     retrieved = await client.get_scratchpad(scratchpad.address)
     decrypted = await client.decrypt_scratchpad(retrieved, secret_key)
     print(decrypted.decode())
-```
-{% endtab %}
-
-{% tab title="Node.js" %}
-```rust
-import { Client, Scratchpad } from '@autonomi/client';
-
-async function useScratchpad() {
-    const client = new Client();
-    const secretKey = await client.generate_secret_key();
-
-    // Create or get existing scratchpad
-    const [scratchpad, isNew] = await client.get_or_create_scratchpad(
-        secretKey,
-        42 // content type
-    );
-
-    // Update scratchpad data
-    const data = new TextEncoder().encode('Hello World');
-    await client.update_scratchpad(scratchpad, data, secretKey);
-
-    // Read scratchpad data
-    const retrieved = await client.get_scratchpad(scratchpad.address);
-    const decrypted = await client.decrypt_scratchpad(retrieved, secretKey);
-    console.log(new TextDecoder().decode(decrypted));
-}
 ```
 {% endtab %}
 {% endtabs %}

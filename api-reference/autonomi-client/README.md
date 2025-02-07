@@ -717,5 +717,5 @@ interface Client {
 ## Further Reading
 
 * [Data Types Guide](../../core-concepts/data_types.md)
-* [Client Modes Guide](../../core-concepts/client_modes.md)
+* [Client Modes Guide](broken-reference)
 * [Local Network Setup](../../how-to-guides/local_network.md)

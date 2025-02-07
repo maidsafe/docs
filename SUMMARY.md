@@ -26,7 +26,6 @@
 * [API Reference Overview](api-reference/index.md)
 * [Client API](api-reference/autonomi-client/README.md)
   * [Data Types Reference](core-concepts/data_types.md)
-  * [Error Handling Reference](api-reference/autonomi-client/errors.md)
 * [Node API](api-reference/ant-node/README.md)
   * [Node Configuration](api-reference/ant-node/configuration.md)
   * [Network Operations](api-reference/ant-node/network.md)

@@ -16,12 +16,6 @@ cargo install cargo-test
 pip install pytest pytest-asyncio
 ```
 {% endtab %}
-
-{% tab title="Node.js" %}
-```bash
-npm install --save-dev jest @types/jest ts-jest
-```
-{% endtab %}
 {% endtabs %}
 
 ## Writing Tests
@@ -68,30 +62,6 @@ async def test_graph_entry_operations():
     retrieved = await client.graph_entry_get(address)
     
     assert str(retrieved) == "test data"
-```
-{% endtab %}
-
-{% tab title="Node.js" %}
-```typescript
-import { Client, GraphEntry } from '@autonomi/client';
-
-describe('GraphEntry Operations', () => {
-  let client: Client;
-
-  beforeEach(() => {
-    client = new Client();
-  });
-
-  test('should store and retrieve graph', async () => {
-    const list = new GraphEntry();
-    list.append("test data");
-    
-    const address = await client.GraphEntryPut(list);
-    const retrieved = await client.GraphEntryGet(address);
-    
-    expect(retrieved.toString()).toBe("test data");
-  });
-});
 ```
 {% endtab %}
 {% endtabs %}

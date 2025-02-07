@@ -43,15 +43,6 @@ client = Client()
 await client.connect()
 ```
 {% endtab %}
-
-{% tab title="Node.js" %}
-```typescript
-import { Client } from 'autonomi';
-
-const client = new Client();
-await client.connect();
-```
-{% endtab %}
 {% endtabs %}
 
 ## Building from Source
@@ -96,25 +87,6 @@ maturin develop
 
 # Install dependencies
 uv pip install -r requirements.txt
-```
-{% endtab %}
-
-{% tab title="Node.js" %}
-```typescript
-# Install build dependencies
-npm install -g node-gyp
-
-# Clone the repository
-git clone https://github.com/maidsafe/autonomi.git
-cd autonomi
-
-# Build the Node.js bindings
-cd nodejs
-npm install
-npm run build
-
-# Link for local development
-npm link
 ```
 {% endtab %}
 {% endtabs %}

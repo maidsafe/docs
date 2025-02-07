@@ -55,25 +55,6 @@ data = b"Hello, World!"
 address = client.data_put_public(data, payment)
 ```
 {% endtab %}
-
-{% tab title="Node.js" %}
-```typescript
-// Node.js
-import { Client, PaymentOption } from '@autonomi/client';
-import { EvmWallet } from '@autonomi/evm';
-
-// Initialize client
-const client = new Client();
-
-// Create or load a wallet
-const wallet = EvmWallet.create();  // or load from private key
-const payment = PaymentOption.fromWallet(wallet);
-
-// Put data with wallet payment
-const data = Buffer.from("Hello, World!");
-const address = await client.dataPutPublic(data, payment);
-```
-{% endtab %}
 {% endtabs %}
 
 ### .
@@ -135,30 +116,6 @@ addr1 = client.data_put_public(data1, payment)
 addr2 = client.data_put_public(data2, payment)
 ```
 {% endtab %}
-
-{% tab title="Node.js" %}
-```typescript
-// Node.js
-import { Client, PaymentOption } from '@autonomi/client';
-import { EvmWallet } from '@autonomi/evm';
-
-// Initialize client
-const client = new Client();
-const wallet = EvmWallet.create();
-
-// Get receipt for multiple operations
-const data1 = Buffer.from("First piece of data");
-const data2 = Buffer.from("Second piece of data");
-
-// Create payment receipt
-const receipt = await client.createPaymentReceipt([data1, data2], wallet);
-const payment = PaymentOption.fromReceipt(receipt);
-
-// Use receipt for puts
-const addr1 = await client.dataPutPublic(data1, payment);
-const addr2 = await client.dataPutPublic(data2, payment);
-```
-{% endtab %}
 {% endtabs %}
 
 ### .
@@ -192,14 +149,6 @@ cost = client.calculate_storage_cost(data)
 print(f"Storage will cost {cost} tokens")
 ```
 {% endtab %}
-
-{% tab title="Node.js" %}
-```typescript
-// Node.js
-const cost = await client.calculateStorageCost(data);
-console.log(`Storage will cost ${cost} tokens`);
-```
-{% endtab %}
 {% endtabs %}
 
 ## Token Management
@@ -229,19 +178,6 @@ balance = wallet.get_balance()
 # Approve tokens if needed
 if not wallet.has_approved_tokens():
     wallet.approve_tokens()
-```
-{% endtab %}
-
-{% tab title="Node.js" %}
-```typescript
-// Node.js
-// Check balance
-const balance = await wallet.getBalance();
-
-// Approve tokens if needed
-if (!await wallet.hasApprovedTokens()) {
-    await wallet.approveTokens();
-}
 ```
 {% endtab %}
 {% endtabs %}
@@ -289,23 +225,6 @@ except TokenNotApproved:
     print("Need to approve token spending")
 except PaymentError as e:
     print(f"Payment failed: {e}")
-```
-{% endtab %}
-
-{% tab title="Node.js" %}
-```typescript
-// Node.js
-try {
-    const address = await client.dataPutPublic(data, payment);
-} catch (e) {
-    if (e instanceof InsufficientBalance) {
-        console.log("Not enough tokens in wallet");
-    } else if (e instanceof TokenNotApproved) {
-        console.log("Need to approve token spending");
-    } else {
-        console.log(`Payment failed: ${e}`);
-    }
-}
 ```
 {% endtab %}
 {% endtabs %}
