@@ -2,7 +2,7 @@
 
 Scratchpad is a native data type in the Autonomi Network:  
 
-* **key-addressed:** Derived from a BLS public key
+* **key-addressed:** Network address is derived from a BLS public key
 * **Size:** 4MB mutable storage
 * **Pay-once, free updates:** Unlimited updates for free  
 * **Versioned & signed:** Includes a version counter and cryptographically verifiable signatures
