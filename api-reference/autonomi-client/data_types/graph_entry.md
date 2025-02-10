@@ -2,7 +2,7 @@
 
 GraphEntry is a native data type in the Autonomi Network:  
 
-* **key-addressed:** Derived from a BLS public key
+* **key-addressed:** Network address is derived from a BLS public key
 * **Size:** 32 bytes of content per entry
 * **Immutable:** Once created, it cannot be changed  
 * **Directed Graph:** Can reference parent entries and descendant entries (with 32 bytes of metadata per descendant)  
