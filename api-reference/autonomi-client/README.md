@@ -288,31 +288,6 @@ for entry in entries:
         print(f"Dir: {entry.name}")
 ```
 {% endtab %}
-
-{% tab title="Node.js" %}
-```typescript
-import { File, Directory } from 'autonomi/fs';
-
-// Store a file
-const file = await client.storeFile('example.txt', content);
-
-// Create a directory
-const dir = await client.createDirectory('docs');
-
-// Add file to directory
-await client.addToDirectory(dir.address, file.address);
-
-// List directory contents
-const entries = await client.listDirectory(dir.address);
-for (const entry of entries) {
-    if (entry.isFile) {
-        console.log(`File: ${entry.name}`);
-    } else {
-        console.log(`Dir: ${entry.name}`);
-    }
-}
-```
-{% endtab %}
 {% endtabs %}
 
 ## Error Handling

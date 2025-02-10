@@ -23,7 +23,7 @@ cargo add autonomi
 {% endtab %}
 
 {% tab title="Python" %}
-
+pip install autonomi-client
 {% endtab %}
 {% endtabs %}
 
@@ -44,6 +44,15 @@ async fn main() {
 {% endtab %}
 
 {% tab title="Python" %}
+```python
+from autonomi_client import Client
+import asyncio
+
+async def main():
+    client = await Client.init()
+
+asyncio.run(main())
+```
 
 {% endtab %}
 {% endtabs %}
@@ -77,8 +86,20 @@ async fn main() {
 {% endtab %}
 
 {% tab title="Python" %}
+```python
+from autonomi_client import Client
+import asyncio
 
+async def main():
+    client = await Client.init()
+
+    data_address = "48a5524425873b21c77145a97ab64abb9ecba3ac4fee8a67f81272a5dcd912a1"
+
+    # Get the bytes of the dog picture
+    dog_picture = await client.data_get_public(data_address)
+    print(f"Data fetched: {dog_picture}", dog_picture)
+
+asyncio.run(main())
+```
 {% endtab %}
 {% endtabs %}
-
-.

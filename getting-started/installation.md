@@ -4,7 +4,6 @@
 
 * Rust (latest stable)
 * Python 3.8 or higher
-* Node.js 16 or higher
 
 ## API-specific Installation
 
@@ -23,7 +22,7 @@ autonomi = "0.3.1"
 
 {% tab title="Python" %}
 ```bash
-pip install autonomi
+pip install autonomi-client
 ```
 {% endtab %}
 {% endtabs %}
@@ -88,7 +87,7 @@ Test your installation by running a simple client initialization:
 ```rust
 use autonomi::Client;
 
-let client = Client::new_local().await?;
+let client = Client::init_local().await?;
 println!("Client initialized successfully");
 ```
 {% endtab %}
@@ -97,7 +96,7 @@ println!("Client initialized successfully");
 ```python
 from autonomi import Client
 
-client = Client.init_read_only()
+client = await Client.init_local()
 print('Client initialized successfully')
 ```
 {% endtab %}
