@@ -95,13 +95,11 @@ uv pip install -r requirements.txt
 
 We welcome contributions! Here's how you can help:
 
-1. Fork the repository
+1. [Fork the repository](https://github.com/maidsafe/autonomi/tree/main)
 2. Create a feature branch
 3. Make your changes
 4. Submit a pull request
 
-For more details, see our [Contributing Guide](https://github.com/dirvine/autonomi/blob/main/CONTRIBUTING.md).
-
 ## Getting Help
 
-* [GitHub Issues](https://github.com/dirvine/autonomi/issues)
+* [GitHub Issues](https://github.com/maidsafe/autonomi/issues)
