@@ -21,10 +21,6 @@ First import our Autonomi dependency using the language you love:
 cargo add autonomi
 ```
 {% endtab %}
-
-{% tab title="Python" %}
-
-{% endtab %}
 {% endtabs %}
 
 ### Setup a Client
@@ -41,10 +37,6 @@ async fn main() {
     let client = Client::init().await.unwrap();
 }
 ```
-{% endtab %}
-
-{% tab title="Python" %}
-
 {% endtab %}
 {% endtabs %}
 
@@ -75,10 +67,4 @@ async fn main() {
 }
 ```
 {% endtab %}
-
-{% tab title="Python" %}
-
-{% endtab %}
 {% endtabs %}
-
-.
