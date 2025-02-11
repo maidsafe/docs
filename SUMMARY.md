@@ -27,6 +27,7 @@
   * [Pointer](api-reference/autonomi-client/pointer.md)
   * [Register](api-reference/autonomi-client/register.md)
   * [Scratchpad](api-reference/autonomi-client/scratchpad.md)
+  * [BLS Keys](api-reference/autonomi-client/bls-keys.md)
 * [Node API](api-reference/ant-node/README.md)
   * [Node Configuration](api-reference/ant-node/configuration.md)
   * [Network Operations](api-reference/ant-node/network.md)
