@@ -38,7 +38,9 @@ use autonomi::Client;
 
 #[tokio::main]
 async fn main() {
-    let client = Client::init().await.unwrap();
+    let client = Client::init()
+        .await
+        .expect("Could not initialize the client");
 }
 ```
 {% endtab %}
@@ -58,7 +60,7 @@ asyncio.run(main())
 
 ### Download a Dog Picture
 
-What better way is there to show off the capabilities of the network? Let's download a dog picture from this public DataAddress:
+What better way is there to show off the capabilities of the network? Let's download a dog picture from this public data address:
 
 ```
 a7d2fdbb975efaea25b7ebe3d38be4a0b82c1d71e9b89ac4f37bc9f8677826e0
@@ -67,19 +69,28 @@ a7d2fdbb975efaea25b7ebe3d38be4a0b82c1d71e9b89ac4f37bc9f8677826e0
 {% tabs %}
 {% tab title="Rust" %}
 ```rust
+use autonomi::client::address::str_to_addr;
 use autonomi::Client;
 
 #[tokio::main]
 async fn main() {
-    let client = Client::init().await.unwrap();
+    let client = Client::init()
+        .await
+        .expect("Could not initialize the client");
 
+    // Data address of the dog picture
     let data_address =
-        DataAddr::from_content(b"48a5524425873b21c77145a97ab64abb9ecba3ac4fee8a67f81272a5dcd912a1");
+        str_to_addr("a7d2fdbb975efaea25b7ebe3d38be4a0b82c1d71e9b89ac4f37bc9f8677826e0")
+            .expect("Invalid data address");
 
     // Get the bytes of the dog picture
-    let dog_picture = client.data_get_public(data_address).await.unwrap();
+    let bytes = client
+        .data_get_public(&data_address)
+        .await
+        .expect("Could not fetch data from the network");
 
-    println!("Data fetched: {:?}", dog_picture);
+    // Write the bytes of the dog picture to a file
+    std::fs::write("lucky.jpg", bytes).expect("Failed to write the file");
 }
 ```
 {% endtab %}
@@ -91,14 +102,20 @@ import asyncio
 
 async def main():
     client = await Client.init()
-
-    data_address = "48a5524425873b21c77145a97ab64abb9ecba3ac4fee8a67f81272a5dcd912a1"
+    
+    # Data address of the dog picture
+    data_address = "a7d2fdbb975efaea25b7ebe3d38be4a0b82c1d71e9b89ac4f37bc9f8677826e0"
 
     # Get the bytes of the dog picture
     dog_picture = await client.data_get_public(data_address)
-    print(f"Data fetched: {dog_picture}", dog_picture)
+    
+    # Write the bytes of the dog picture to a file
+    with open("lucky.jpg", "wb") as f:
+        f.write(dog_picture)
 
 asyncio.run(main())
 ```
 {% endtab %}
 {% endtabs %}
+
+After running this code, you'll see a `lucky.jpg` file downloaded to your work directory!
