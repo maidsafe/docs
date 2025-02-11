@@ -37,7 +37,7 @@ let client = Client::new()?;
 
 {% tab title="Python" %}
 ```python
-from autonomi import Client
+from autonomi_client import Client
 
 client = Client()
 await client.connect()

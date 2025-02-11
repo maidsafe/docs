@@ -48,7 +48,7 @@ mod tests {
 {% tab title="Python" %}
 ```python
 import pytest
-from autonomi import Client, GraphEntry
+from autonomi_client import Client, GraphEntry
 
 @pytest.mark.asyncio
 async def test_graph_entry_operations():

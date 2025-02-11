@@ -40,7 +40,7 @@ let address = client.data_put_public(data.into(), payment).await?;
 {% tab title="Python" %}
 ```python
 # Python
-from autonomi import Client, PaymentOption
+from autonomi_client import Client, PaymentOption
 from autonomi.evm import EvmWallet
 
 # Initialize client
@@ -96,7 +96,7 @@ let addr2 = client.data_put_public(data2.into(), payment).await?;
 {% tab title="Python" %}
 ```python
 # Python
-from autonomi import Client, PaymentOption
+from autonomi_client import Client, PaymentOption
 from autonomi.evm import EvmWallet
 
 # Initialize client

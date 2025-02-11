@@ -19,15 +19,6 @@ npx hardhat node
 
 ### Connecting to Test Networks
 
-```typescript
-import { EvmNetwork } from '@autonomi/client';
-
-const network = new EvmNetwork({
-  chainId: 31337, // Local hardhat network
-  rpcUrl: 'http://127.0.0.1:8545'
-});
-```
-
 ## Deploying Test Contracts
 
 1. Compile contracts

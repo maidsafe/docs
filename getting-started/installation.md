@@ -98,7 +98,7 @@ println!("Client initialized successfully");
 
 {% tab title="Python" %}
 ```python
-from autonomi import Client
+from autonomi_client import Client
 
 client = await Client.init_local()
 print('Client initialized successfully')
