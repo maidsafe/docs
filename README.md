@@ -16,7 +16,7 @@ Autonomi is a decentralised data and communications platform designed to provide
 
 ### API References
 
-* [Autonomi Client](api-reference/autonomi-client/) - Core client library for network operations
+* [Autonomi Client](api-reference/autonomi-client.md) - Core client library for network operations
 * [Ant Node](api-reference/ant-node/) - Node implementation for network participation
 * [BLS Threshold Crypto](api-reference/blsttc.md) - Threshold cryptography implementation
 * [Self Encryption](api-reference/self-encryption.md) - Content-based encryption library
@@ -90,13 +90,11 @@ maturin develop --uv
 
 We welcome contributions! Here's how you can help:
 
-1. Fork the repository
+1. [Fork the repository](https://github.com/maidsafe/autonomi/tree/main)
 2. Create a feature branch
 3. Make your changes
 4. Submit a pull request
 
-For more details, see our [Contributing Guide](https://github.com/dirvine/autonomi/blob/main/CONTRIBUTING.md).
-
 ## Getting Help
 
-* [GitHub Issues](https://github.com/dirvine/autonomi/issues)
+* [GitHub Issues](https://github.com/maidsafe/autonomi/issues)

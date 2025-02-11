@@ -16,16 +16,12 @@
 
 * [Quick Start Guide](how-to-guides/quick-start-guide.md)
 * [Local Network Setup Guide](how-to-guides/local_network.md)
-* [Local Development Environment](how-to-guides/local_development.md)
-* [EVM Integration Guide](how-to-guides/evm_integration.md)
-* [Testing Guide](how-to-guides/testing_guide.md)
 * [Payments Guide](how-to-guides/payments.md)
 
 ## API Reference
 
 * [API Reference Overview](api-reference/index.md)
-* [Client API](api-reference/autonomi-client/README.md)
-  * [Data Types Reference](core-concepts/data_types.md)
+* [Client API](api-reference/autonomi-client.md)
 * [Node API](api-reference/ant-node/README.md)
   * [Node Configuration](api-reference/ant-node/configuration.md)
   * [Network Operations](api-reference/ant-node/network.md)
