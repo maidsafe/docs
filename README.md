@@ -65,12 +65,8 @@ cargo install --path .
 ```
 {% endtab %}
 
-{% tab title="Python (using Maturin & uv)" %}
+{% tab title="Python" %}
 ```python
-# Install build dependencies
-curl -LsSf <https://astral.sh/uv/install.sh> | sh
-uv pip install maturin
-
 # Clone the repository
 git clone https://github.com/maidsafe/autonomi.git
 cd autonomi
@@ -81,12 +77,11 @@ source .venv/bin/activate  # Unix
 # or
 .venv\Scripts\activate     # Windows
 
-# Build and install the package
-cd python
-maturin develop
+# Installs `maturin`
+uv sync
 
-# Install dependencies
-uv pip install -r requirements.txt
+# Build and install the package
+maturin develop --uv
 ```
 {% endtab %}
 {% endtabs %}
