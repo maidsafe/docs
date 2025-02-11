@@ -1,4 +1,4 @@
-# Data Types Reference
+# Data Types
 
 This page provides detailed information about the core data types used in the Autonomi Client API.
 
@@ -14,25 +14,25 @@ Below is a detailed description of the native data types.
 
 A Chunk is a 1MB block of raw bytes that serves as a fundamental unit of storage in the Autonomi Network. It is content-addressed, meaning its address is derived from its content hash. Chunks are immutable, ensuring that once stored, their data cannot be modified. They are also self-verifiable, as their integrity can be confirmed by computing the hash and comparing it to the address.
 
-More on Chunks in the [Chunk](../api-reference/autonomi-client/data_types/chunk.md) section.
+More on Chunks in the [Chunk API Reference](../api-reference/autonomi-client/chunks.md)
 
 ### Pointer
 
 A Pointer is a mutable reference to any native data type on the Autonomi Network. It stores an address that identifies the target data. Unlike immutable data, a Pointer follows a pay-once model but can be updated for free. To ensure consistency, it includes a version counter, preventing outdated writes. Pointers are owned by a public key, with their data stored at the owner’s address. Each update is signed by the owner, allowing verification through cryptographic signature checks.
 
-More on Pointers in the [Pointer](../api-reference/autonomi-client/data_types/pointer.md) section.
+More on Pointers in the [Pointer API Reference](../api-reference/autonomi-client/pointer.md)
 
 ### Scratchpad
 
 A Scratchpad is a 4MB mutable storage space on the Autonomi Network. It follows a pay-once model, allowing unlimited updates for free. To maintain consistency, it includes a version counter, ensuring the latest version is always the one kept on the Network. Scratchpads are owned by a public key, with their data stored at the owner’s address. Each update is signed by the owner, making it cryptographically verifiable.
 
-More on Scratchpads in the [Scratchpad](../api-reference/autonomi-client/data_types/scratchpad.md) section.
+More on Scratchpads in the [Scratchpad API Reference](../api-reference/autonomi-client/scratchpad.md)
 
 ### GraphEntry
 
 A GraphEntry is a fundamental unit in a generic directed graph within the Autonomi Network, built from multiple interconnected entries. It is immutable and can store 32 bytes of data per entry. Each GraphEntry can reference parent entries using their public keys and descendant entries along with 32 bytes of metadata per descendant, also identified by their public keys. The entry is owned by a public key, stored at the owner’s address, and signed by the owner, ensuring cryptographic verification.
 
-More on GraphEntries in the [GraphEntry](../api-reference/autonomi-client/data_types/graph_entry.md) section.
+More on GraphEntries in the [GraphEntry API Reference](../api-reference/autonomi-client/graphentry.md)
 
 ## High-Level Data Types
 

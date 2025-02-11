@@ -21,7 +21,12 @@
 ## API Reference
 
 * [API Reference Overview](api-reference/index.md)
-* [Client API](api-reference/autonomi-client.md)
+* [Client API](api-reference/autonomi-client/README.md)
+  * [Chunks](api-reference/autonomi-client/chunks.md)
+  * [GraphEntry](api-reference/autonomi-client/graphentry.md)
+  * [Pointer](api-reference/autonomi-client/pointer.md)
+  * [Register](api-reference/autonomi-client/register.md)
+  * [Scratchpad](api-reference/autonomi-client/scratchpad.md)
 * [Node API](api-reference/ant-node/README.md)
   * [Node Configuration](api-reference/ant-node/configuration.md)
   * [Network Operations](api-reference/ant-node/network.md)
