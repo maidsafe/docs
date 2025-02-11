@@ -53,7 +53,6 @@ async def main():
 
 asyncio.run(main())
 ```
-
 {% endtab %}
 {% endtabs %}
 
@@ -62,7 +61,7 @@ asyncio.run(main())
 What better way is there to show off the capabilities of the network? Let's download a dog picture from this public DataAddress:
 
 ```
-48a5524425873b21c77145a97ab64abb9ecba3ac4fee8a67f81272a5dcd912a1
+a7d2fdbb975efaea25b7ebe3d38be4a0b82c1d71e9b89ac4f37bc9f8677826e0
 ```
 
 {% tabs %}
@@ -84,6 +83,7 @@ async fn main() {
 }
 ```
 {% endtab %}
+
 {% tab title="Python" %}
 ```python
 from autonomi_client import Client
