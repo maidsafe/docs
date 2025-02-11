@@ -40,7 +40,7 @@ async fn store_encrypted_data(data: Bytes) -> Result<()> {
 
 {% tab title="Python" %}
 ```python
-from autonomi import Client
+from autonomi_client import Client
 
 async def store_encrypted_data(data: bytes):
     client = Client()
@@ -107,7 +107,7 @@ async fn use_scratchpad() -> Result<()> {
 
 {% tab title="Python" %}
 ```python
-from autonomi import Client, Scratchpad
+from autonomi_client import Client, Scratchpad
 
 async def use_scratchpad():
     client = Client()

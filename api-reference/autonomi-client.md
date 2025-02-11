@@ -6,10 +6,8 @@ Choose your preferred language:
 
 {% tabs %}
 {% tab title="Rust" %}
-```toml
-# Add to Cargo.toml:
-[dependencies]
-autonomi = "0.3.1"
+```bash
+cargo add autonomi
 ```
 {% endtab %}
 
@@ -27,29 +25,29 @@ Initialize a client in read-only mode for browsing data, or with write capabilit
 {% tabs %}
 {% tab title="Rust" %}
 ```rust
-use autonomi::Client;
+use autonomi::{Client, ClientConfig};
 
-// Initialize a read-only client
+// Initialize a local client
 let client = Client::new_local().await?;
 
 // Or initialize with configuration
 let config = ClientConfig::default();
-let client = Client::new(config).await?;
+let client = Client::init_with_config(config).await?;
+// Same as `Client::init`.
 ```
 {% endtab %}
 
 {% tab title="Python" %}
 ```python
-from autonomi import Client
+from autonomi_client import Client
 
-# Initialize a read-only client
-client = Client.init_read_only()
+# Initialize a local client
+client = await Client.init_local()
 
-# Or initialize with write capabilities and configuration
-config = {
-    # Add your configuration here
-}
-client = Client.init_with_config(config)
+# Or initialize with custom config
+config = ClientConfig.new()
+config.network = Network(False)
+client = await Client.init_with_config(config)
 ```
 {% endtab %}
 {% endtabs %}
@@ -83,19 +81,22 @@ println!("Size: {}", metadata.size);
 
 {% tab title="Python" %}
 ```python
-from autonomi import Chunk
+from autonomi_client import Client, Wallet, Network
+
+# Connect to the network
+client = await Client.init_local()
+
+# Wallet with private key that has funding on default local testnets
+private_key = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
+wallet = Wallet.new_from_private_key(Network(True), private_key)
 
 # Store raw data as a chunk
 data = b"Hello, World!"
-chunk = client.store_chunk(data)
+[cost, addr] = await client.chunk_put(data, PaymentOption.wallet(wallet))
 
 # Retrieve chunk data
-retrieved = client.get_chunk(chunk.address)
+retrieved = await client.chunk_get(addr)
 assert data == retrieved
-
-# Get chunk metadata
-metadata = client.get_chunk_metadata(chunk.address)
-print(f"Size: {metadata.size}")
 ```
 {% endtab %}
 {% endtabs %}
@@ -126,20 +127,48 @@ println!("Version: {}", metadata.version);
 
 {% tab title="Python" %}
 ```python
-from autonomi import Pointer
+from autonomi_client import Client, Network, Wallet, PaymentOption, SecretKey, PointerTarget, ChunkAddress, Pointer
 
-# Create a pointer to some data
-pointer = client.create_pointer(target_address)
+# Wallet with private key that has funding on default local testnets
+private_key = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
+wallet = Wallet.new_from_private_key(Network(True), private_key)
 
-# Update pointer target
-client.update_pointer(pointer.address, new_target_address)
+# Connect to the network
+client = await Client.init_local()
 
-# Resolve pointer to get current target
-target = client.resolve_pointer(pointer.address)
+# First, let's upload some data that we want to point to
+target_data = b"Hello, I'm the target data!"
+[cost, target_addr] = await client.data_put_public(target_data, PaymentOption.wallet(wallet))
+print(f"Target data uploaded to: {target_addr}")
 
-# Get pointer metadata and version
-metadata = client.get_pointer_metadata(pointer.address)
-print(f"Version: {metadata.version}")
+# Create a pointer target from the address
+target = PointerTarget.new_chunk(ChunkAddress(target_addr))
+
+# Create owner key pair
+key = SecretKey()
+
+# Estimate the cost of the pointer
+cost = await client.pointer_cost(key.public_key())
+print(f"pointer cost: {cost}")
+
+# Create the pointer
+pointer = Pointer(key, 0, target)
+payment_option = PaymentOption.wallet(wallet)
+
+# Create and store the pointer
+pointer_addr = await client.pointer_put(pointer, payment_option)
+print("Pointer stored successfully")
+
+# Wait for the pointer to be stored by the network
+await asyncio.sleep(1)
+
+# Later, we can retrieve the pointer
+pointer = await client.pointer_get(pointer_addr)
+print(f"Retrieved pointer target: {pointer}")
+
+# We can then use the target address to get the original data
+retrieved_data = await client.data_get_public(pointer.target.hex)
+print(f"Retrieved target data: {retrieved_data.decode()}")
 ```
 {% endtab %}
 {% endtabs %}
@@ -151,44 +180,62 @@ Decentralized Graph structures for linked data:
 {% tabs %}
 {% tab title="Rust" %}
 ```rust
-use autonomi::GraphEntry;
+use autonomi::{
+    client::{
+        graph::{GraphEntry, GraphError},
+        payment::PaymentOption,
+    },
+    Client,
+};
 
-// Create a new graph
-let entry = client.create_graph_entry().await?;
+let client = Client::init_local().await?;
+let wallet = get_funded_wallet();
 
-// Append items
-client.append_to_graph(entry.address(), item1).await?;
-client.append_to_graph(entry.address(), item2).await?;
+let key = bls::SecretKey::random();
+let content = [0u8; 32];
+let graph_entry = GraphEntry::new(&key, vec![], content, vec![]);
 
-// Read graph contents
-let items = client.get_graph(entry.address()).await?;
+// estimate the cost of the graph_entry
+let cost = client.graph_entry_cost(&key.public_key()).await?;
+println!("graph_entry cost: {cost}");
 
-// Get graph history
-let history = client.get_graph_history(entry.address()).await?;
-for entry in history {
-    println!("Version {}: {:?}", entry.version, entry.data);
-}
+// put the graph_entry
+let payment_option = PaymentOption::from(&wallet);
+client
+    .graph_entry_put(graph_entry.clone(), payment_option)
+    .await?;
+
+// wait for the graph_entry to be replicated
+tokio::time::sleep(tokio::time::Duration::from_secs(5)).await;
+
+// check that the graph_entry is stored
+let txs = client.graph_entry_get(&graph_entry.address()).await?;
+assert_eq!(txs, graph_entry.clone());
 ```
 {% endtab %}
 
 {% tab title="Python" %}
 ```python
-from autonomi import GraphEntry
+from autonomi_client import *
+wallet = Wallet.new_from_private_key(Network(True), "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80")
 
-# Create a new graph
-entry = client.create_graph_entry()
+# Connect to the network
+client = await Client.init_local()
 
-# Append items
-client.append_to_graph(entry.address, item1)
-client.append_to_graph(entry.address, item2)
+# Random key
+key = SecretKey()
+content = bytearray(32)
+graph_entry = GraphEntry(key, [], content, [])
 
-# Read list contents
-items = client.get_graph(entry.address)
+# estimate the cost of the graph_entry
+cost = await client.graph_entry_cost(key.public_key())
 
-# Get graph history
-history = client.get_graph_history(entry.address)
-for entry in history:
-    print(f"Version {entry.version}: {entry.data}")
+# put the graph_entry
+[cost, addr] = await client.graph_entry_put(graph_entry, PaymentOption.wallet(wallet))
+
+# check that the graph_entry is stored
+txs = await client.graph_entry_get(graph_entry.address())
+assert txs == graph_entry
 ```
 {% endtab %}
 {% endtabs %}
@@ -200,122 +247,80 @@ Unstructured data with CRDT properties:
 {% tabs %}
 {% tab title="Rust" %}
 ```rust
-use autonomi::{ScratchPad, ContentType};
+use autonomi::client::payment::PaymentOption;
+use autonomi::scratchpad::ScratchpadError;
+use autonomi::AttoTokens;
+use autonomi::{
+    client::scratchpad::{Bytes, Scratchpad},
+    Client,
+};
 
-// Create a scratchpad
-let pad = client.create_scratchpad(ContentType::UserSettings).await?;
+let client = Client::init_local().await?;
+let wallet = todo!();
 
-// Update with data
-client.update_scratchpad(pad.address(), settings_data).await?;
+let key = bls::SecretKey::random();
+let public_key = key.public_key();
+let content = Bytes::from("Massive Array of Internet Disks");
+let scratchpad = Scratchpad::new(&key, 42, &content, 0);
 
-// Read current data
-let current = client.get_scratchpad(pad.address()).await?;
+// estimate the cost of the scratchpad
+let cost = client.scratchpad_cost(&public_key).await?;
+println!("scratchpad cost: {cost}");
 
-// Get metadata
-let metadata = client.get_scratchpad_metadata(pad.address()).await?;
-println!("Updates: {}", metadata.update_counter);
+// put the scratchpad
+let payment_option = PaymentOption::from(&wallet);
+let (cost, addr) = client
+    .scratchpad_put(scratchpad.clone(), payment_option)
+    .await?;
+assert_eq!(addr, *scratchpad.address());
+println!("scratchpad put 1 cost: {cost}");
+
+// wait for the scratchpad to be replicated
+tokio::time::sleep(tokio::time::Duration::from_secs(5)).await;
+
+// check that the scratchpad is stored
+let got = client.scratchpad_get(&addr).await?;
+assert_eq!(got, scratchpad.clone());
+println!("scratchpad got 1");
+
+// check that the content is decrypted correctly
+let got_content = got.decrypt_data(&key)?;
+assert_eq!(got_content, content);
 ```
 {% endtab %}
 
 {% tab title="Python" %}
 ```python
-from autonomi import ScratchPad, ContentType
+from autonomi_client import *
 
-# Create a scratchpad
-pad = client.create_scratchpad(ContentType.USER_SETTINGS)
+wallet = Wallet.new_from_private_key(Network(True), "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80")
 
-# Update with data
-client.update_scratchpad(pad.address, settings_data)
+# Connect to the network
+client = await Client.init_local()
 
-# Read current data
-current = client.get_scratchpad(pad.address)
+key = SecretKey()
+content = b"Massive Array of Internet Disks"
+scratchpad = Scratchpad(key, 42, content, 0)
 
-# Get metadata
-metadata = client.get_scratchpad_metadata(pad.address)
-print(f"Updates: {metadata.update_counter}")
+# put the scratchpad
+payment_option = PaymentOption.wallet(wallet)
+(cost, addr) = await client.scratchpad_put(scratchpad, payment_option)
+print(f"scratchpad address: {addr}")
+print(f"scratchpad address: {scratchpad.address()}")
+assert addr == scratchpad.address()
+
+# check that the scratchpad is stored
+got = await client.scratchpad_get(addr)
+assert got == scratchpad
+
+# check that the content is decrypted correctly
+got_content = got.decrypt_data(key)
+assert got_content == content
 ```
 {% endtab %}
 {% endtabs %}
 
-## File System Operations
-
-Create and manage files and directories:
-
-{% tabs %}
-{% tab title="Rust" %}
-```rust
-use autonomi::fs::{File, Directory};
-
-// Store a file
-let file = client.store_file("example.txt", content).await?;
-
-// Create a directory
-let dir = client.create_directory("docs").await?;
-
-// Add file to directory
-client.add_to_directory(dir.address(), file.address()).await?;
-
-// List directory contents
-let entries = client.list_directory(dir.address()).await?;
-for entry in entries {
-    match entry {
-        DirEntry::File(f) => println!("File: {}", f.name),
-        DirEntry::Directory(d) => println!("Dir: {}", d.name),
-    }
-}
-```
-{% endtab %}
-
-{% tab title="Python" %}
-```python
-from autonomi.fs import File, Directory
-
-# Store a file
-file = client.store_file("example.txt", content)
-
-# Create a directory
-dir = client.create_directory("docs")
-
-# Add file to directory
-client.add_to_directory(dir.address, file.address)
-
-# List directory contents
-entries = client.list_directory(dir.address)
-for entry in entries:
-    if entry.is_file:
-        print(f"File: {entry.name}")
-    else:
-        print(f"Dir: {entry.name}")
-```
-{% endtab %}
-
-{% tab title="Node.js" %}
-```typescript
-import { File, Directory } from 'autonomi/fs';
-
-// Store a file
-const file = await client.storeFile('example.txt', content);
-
-// Create a directory
-const dir = await client.createDirectory('docs');
-
-// Add file to directory
-await client.addToDirectory(dir.address, file.address);
-
-// List directory contents
-const entries = await client.listDirectory(dir.address);
-for (const entry of entries) {
-    if (entry.isFile) {
-        console.log(`File: ${entry.name}`);
-    } else {
-        console.log(`Dir: ${entry.name}`);
-    }
-}
-```
-{% endtab %}
-{% endtabs %}
-
-## Error Handling
+<!-- ## Error Handling
 
 Each language provides appropriate error handling mechanisms:
 
@@ -366,9 +371,9 @@ except Exception as e:
     handle_other_error(e)
 ```
 {% endtab %}
-{% endtabs %}
+{% endtabs %} -->
 
-## Advanced Usage
+<!-- ## Advanced Usage
 
 ### Custom Types
 
@@ -444,7 +449,7 @@ encrypted = client.get_scratchpad(pad.address)
 decrypted = decrypt_aes(encrypted, key)
 ```
 {% endtab %}
-{% endtabs %}
+{% endtabs %} -->
 
 ## Best Practices
 

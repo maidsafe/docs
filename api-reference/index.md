@@ -48,6 +48,5 @@ All APIs are available in multiple languages:
 
 * Python (3.8+)
 * Rust (stable)
-* Node.js (16+)
 
 Each API section includes language-specific installation instructions and code examples.
