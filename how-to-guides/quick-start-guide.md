@@ -84,7 +84,6 @@ async fn main() {
 }
 ```
 {% endtab %}
-
 {% tab title="Python" %}
 ```python
 from autonomi_client import Client
