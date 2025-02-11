@@ -34,3 +34,4 @@
 * [BLS Threshold Crypto](api-reference/blsttc.md)
 * [Self Encryption](api-reference/self-encryption.md)
 * [Rust Crate API Reference](https://docs.rs/autonomi/latest/autonomi/)
+* [Python API Reference](api-reference/python-api-reference.md)
