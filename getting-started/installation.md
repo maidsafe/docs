@@ -2,8 +2,17 @@
 
 ## Prerequisites
 
-* Rust (latest stable)
-* Python 3.8 or higher
+Download the latest toolchain for you programming language:
+
+{% tabs %}
+{% tab title="Rust" %}
+* Rust 1.83.0 or higher. (See [instructions](https://www.rust-lang.org/tools/install).)
+{% endtab %}
+
+{% tab title="Python" %}
+* Python 3.8 or higher. (See [downloads](https://www.python.org/downloads/).)
+{% endtab %}
+{% endtabs %}
 
 ## API-specific Installation
 
@@ -13,10 +22,8 @@ Choose the APIs you need for your project:
 
 {% tabs %}
 {% tab title="Rust" %}
-```toml
-# Add to Cargo.toml:
-[dependencies]
-autonomi = "0.3.1"
+```bash
+cargo add autonomi
 ```
 {% endtab %}
 
@@ -31,9 +38,8 @@ pip install autonomi-client
 
 {% tabs %}
 {% tab title="Rust" %}
-```toml
-[dependencies]
-ant-node = "0.3.2"
+```bash
+cargo add ant-node
 ```
 {% endtab %}
 
@@ -48,9 +54,8 @@ pip install antnode
 
 {% tabs %}
 {% tab title="Rust" %}
-```toml
-[dependencies]
-blsttc = "8.0.2"
+```bash
+cargo add blsttc
 ```
 {% endtab %}
 
@@ -65,9 +70,8 @@ pip install blsttc
 
 {% tabs %}
 {% tab title="Rust" %}
-```toml
-[dependencies]
-self_encryption = "0.28.0"
+```bash
+cargo add self_encryption
 ```
 {% endtab %}
 

@@ -126,27 +126,6 @@ payment_vault.functions.getQuote([metrics]).call()
 payment_vault.functions.payForQuotes(payments).transact()
 ```
 {% endtab %}
-
-{% tab title="TypeScript/JavaScript" %}
-```typescript
-import { ethers } from 'ethers';
-
-// Connect to local network
-const provider = new ethers.JsonRpcProvider('http://localhost:8545');
-const wallet = new ethers.Wallet(PRIVATE_KEY, provider);
-
-// Get contract instances
-const paymentVault = new ethers.Contract(
-  PAYMENT_VAULT_ADDRESS,
-  PAYMENT_VAULT_ABI,
-  wallet
-);
-
-// Interact with contracts
-await paymentVault.getQuote([metrics]);
-await paymentVault.payForQuotes(payments);v
-```
-{% endtab %}
 {% endtabs %}
 
 ## Environment Variables
