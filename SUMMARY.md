@@ -16,9 +16,6 @@
 
 * [Quick Start Guide](how-to-guides/quick-start-guide.md)
 * [Local Network Setup Guide](how-to-guides/local_network.md)
-* [Local Development Environment](how-to-guides/local_development.md)
-* [EVM Integration Guide](how-to-guides/evm_integration.md)
-* [Testing Guide](how-to-guides/testing_guide.md)
 * [Payments Guide](how-to-guides/payments.md)
 
 ## API Reference
