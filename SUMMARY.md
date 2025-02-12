@@ -15,9 +15,9 @@
 ## How To Guides
 
 * [Quick Start Guide](how-to-guides/quick-start-guide.md)
-* [Build Apps with Python](how-to-guides/build_apps_with_python.md)
 * [Local Network Setup Guide](how-to-guides/local_network.md)
 * [Payments Guide](how-to-guides/payments.md)
+* [Build Apps with Python](how-to-guides/build_apps_with_python.md)
 
 ## API Reference
 
