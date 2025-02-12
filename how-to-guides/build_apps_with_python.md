@@ -20,12 +20,13 @@ First let's install the required tools to get started:
 
 Once all the above is ready, let's proceed to create a local testnet. For this testnet we will use the following Ethereum wallet which is the default address for our testnet. 
 
-```bash
-SECRET_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
-ADDRESS=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
-```
-
-> Don't send real money to this address!
+> The default private key and address (public key) for the testnet is:
+> ```bash
+> SECRET_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+> ADDRESS=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+> ```
+> It owns all the money on the testnet, you can use it to play around with the testnet! Which we will do in the next steps.
+> **Don't send real money to this address!!**
 
 ## Create a local testnet
 
