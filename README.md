@@ -17,7 +17,7 @@ Autonomi is a decentralised data and communications platform designed to provide
 ### API References
 
 * [Autonomi Client](api-reference/autonomi-client/) - Core client library for network operations
-* [Ant Node](api-reference/ant-node/) - Node implementation for network participation
+* [Ant Node](api-reference/ant-node.md) - Node implementation for network participation
 * [BLS Threshold Crypto](api-reference/blsttc.md) - Threshold cryptography implementation
 * [Self Encryption](api-reference/self-encryption.md) - Content-based encryption library
 * Low-level [Rust Crate API Reference](https://docs.rs/autonomi/latest/autonomi/)

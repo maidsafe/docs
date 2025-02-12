@@ -14,7 +14,7 @@ The [Autonomi Client API](autonomi-client/) is the core library for interacting 
 
 ## Node API
 
-The [Ant Node API](ant-node/) allows you to run and manage nodes in the Autonomi network. Features include:
+The [Ant Node API](ant-node.md) allows you to run and manage nodes in the Autonomi network. Features include:
 
 * Node setup and configuration
 * Network participation

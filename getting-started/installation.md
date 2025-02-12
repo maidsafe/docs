@@ -110,7 +110,7 @@ print('Client initialized successfully')
 
 * API References:
   * [Autonomi Client](../api-reference/autonomi-client/)
-  * [Ant Node](../api-reference/ant-node/)
+  * [Ant Node](../api-reference/ant-node.md)
   * [BLS Threshold Crypto](../api-reference/blsttc.md)
   * [Self Encryption](../api-reference/self-encryption.md)
 * [Local Network Setup](../how-to-guides/local_network.md)
