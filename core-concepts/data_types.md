@@ -42,6 +42,8 @@ The API provides high-level data APIs and types that offer a more intuitive and 
 
 Regular data storage allows storing arbitrary-length data securely on the Autonomi Network. It uses self-encryption, a strong encryption mechanism that ensures data is fragmented into encrypted Chunks and distributed across the network. This storage supports both public data (accessible to anyone) and private data (restricted to the owner). It provides immutable, permanent storage, where data remains unchanged once uploaded. Users pay once for the upload, and the data is preserved forever.
 
+More on Regular Data Storage in the [Data API Reference](../api-reference/autonomi-client/data.md)
+
 ### Files
 
 Files are built on top of regular data storage, allowing users to store entire files or directories as immutable archives. They support deeply nested paths and associated metadata, enabling structured file organization. Like regular data storage, files are immutable and permanent, requiring a one-time payment for upload, after which they remain unchanged forever.
