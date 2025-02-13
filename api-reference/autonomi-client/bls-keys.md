@@ -14,7 +14,7 @@ BLS keys are like a digital signature kit: the secret key is your personal stamp
 
 ### Example of basic key usage
 
-```
+```rust
 use autonomi::{SecretKey, PublicKey, Signature};
 
 // create a random secret key
