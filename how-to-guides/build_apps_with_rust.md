@@ -1,11 +1,11 @@
-# Start building apps in Rust with Autonomi
+# Build Apps with Rust
 
 This guide will help you get started with Autonomi starting from scratch. This guide has 4 parts:
 
-1. [Prerequisites](#prerequisites)
-2. [Create a local testnet](#create-a-local-testnet)
-3. [Connect to the testnet with Rust](#connect-to-the-testnet-with-rust)
-4. [Upload and retrieve data with Rust](#upload-and-retrieve-data-with-rust)
+1. [Prerequisites](build_apps_with_rust.md#prerequisites)
+2. [Create a local testnet](build_apps_with_rust.md#create-a-local-testnet)
+3. [Connect to the testnet with Rust](build_apps_with_rust.md#connect-to-the-testnet-with-rust)
+4. [Upload and retrieve data with Rust](build_apps_with_rust.md#upload-and-retrieve-data-with-rust)
 
 > This has guide has been tested on MacOS, it should work on Linux or other unixes as well, but the commands might be slightly different for Windows (unless you are using [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)).
 
@@ -13,22 +13,25 @@ This guide will help you get started with Autonomi starting from scratch. This g
 
 First let's install the required tools to get started:
 
-- **The [Rust toolchain installed](https://www.rust-lang.org/tools/install)**, for running the testnet
-- **[Anvil](https://book.getfoundry.sh/getting-started/installation)**: to run a local Ethereum testnet
+* The [**Rust toolchain installed**](https://www.rust-lang.org/tools/install), for running the testnet
+* [**Anvil**](https://book.getfoundry.sh/getting-started/installation): to run a local Ethereum testnet
 
-Once all the above is ready, let's proceed to create a local testnet. For this testnet we will use the following Ethereum wallet which is the default address for our testnet. 
+Once all the above is ready, let's proceed to create a local testnet. For this testnet we will use the following Ethereum wallet which is the default address for our testnet.
 
 > The default private key and address (public key) for the testnet is:
+>
 > ```bash
 > SECRET_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
 > ADDRESS=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
 > ```
-> It owns all the money on the testnet, you can use it to play around with the testnet! Which we will do in the next steps.
-> **Don't send real money to this address!!**
+>
+> It owns all the money on the testnet, you can use it to play around with the testnet! Which we will do in the next steps. **Don't send real money to this address!!**
 
 ## Create a local testnet
 
-> An app is currently in development to make this process a one click thing, but for now we need to run the testnet manually. 
+{% hint style="info" %}
+An app is currently in development to make this a one-click process, but for now we need to run the testnet manually.
+{% endhint %}
 
 First let's clone the Autonomi repository:
 
@@ -43,7 +46,7 @@ Then to run the testnet, run the following command:
 cargo run --bin evm-testnet
 ```
 
-Keep the terminal open and running. 
+Keep the terminal open and running.
 
 In a separate terminal, in the same directory (autonomi), run the following command:
 
@@ -55,7 +58,7 @@ You now have a local autonomi testnet running! Congrats! 🎉
 
 ## Connect to the testnet with Rust
 
-Let's create a Rust project that interacts with the testnet. First let's setup a working environment and add [autonomi](https://crates.io/crates/autonomi) as a dependency. 
+Let's create a Rust project that interacts with the testnet. First let's setup a working environment and add [autonomi](https://crates.io/crates/autonomi) as a dependency.
 
 ```bash
 # Create a new Rust project
@@ -166,7 +169,15 @@ The API offers many other tools to interact with the Network which you can find 
 
 ## Cleanup and Troubleshooting
 
-To stop and cleanup after a testnet, run the following commands to kill all the nodes, the evm testnet and delete all autonomi related files (**WARNING**: if you are running local live nodes or apps/clients on autonomi **DO NOT DELETE THE WHOLE** autonomi data FOLDER you risk losing all your data). It is recommended to run testnets on a separate user or machine. 
+To stop and cleanup after a testnet, run the following commands to kill all the nodes, the evm testnet and delete all Autonomi related files&#x20;
+
+{% hint style="danger" %}
+**Warning**: if you are running local live nodes or apps/clients on Autonomi **DO NOT DELETE THE WHOLE** Autonomi data FOLDER as you risk losing all your data). \
+\
+It is recommended to run testnets on a separate user or machine.
+{% endhint %}
+
+
 
 ```bash
 # macOS
@@ -192,4 +203,4 @@ rm -rf $HOME/Library/Application\ Support/autonomi/; cargo run --bin evm-testnet
 rm -rf $HOME/.local/share/autonomi/; cargo run --bin evm-testnet& cargo run --bin antctl -- local run --build --rewards-address=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266; cat || killall evm-testnet anvil antnode
 ```
 
-> has to be run in the autonomi directory (the one we cloned in [part 1](#create-a-local-testnet))
+This has to be run in the autonomi directory (the one we cloned in [part 1](build_apps_with_rust.md#create-a-local-testnet)).
