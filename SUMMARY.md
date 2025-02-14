@@ -10,7 +10,7 @@
 
 * [Data Types](core-concepts/data_types.md)
 * [Data Storage](core-concepts/data_storage.md)
-* [BLS Keys](api-reference/autonomi-client/bls_keys.md)
+* [BLS Keys](core-concepts/bls-keys.md)
 
 ## How To Guides
 
