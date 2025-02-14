@@ -18,6 +18,7 @@
 * [Local Network Setup Guide](how-to-guides/local_network.md)
 * [Payments Guide](how-to-guides/payments.md)
 * [Build Apps with Python](how-to-guides/build_apps_with_python.md)
+* [Build Apps with Rust](how-to-guides/build_apps_with_rust.md)
 
 ## API Reference
 
