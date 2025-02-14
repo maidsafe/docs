@@ -6,14 +6,17 @@ The Data API enables storage of arbitrarily sized blobs on the Autonomi Network 
 * **Size:** The data can be of any size
 * **Access Control:** Data can be private or public
 
+### Client Methods
+
+* **data\_cost**\
+  Estimates the storage cost for a piece of data.
+
 ### Client Methods for Private Data (the default on the Network)
 
 * **data\_get**\
   Retrieves bytes from the network using a data map.
 * **data\_put**\
   Uploads bytes to the network and returns the price along with the data map to access the data. (This data map is to be kept secret)
-* **data\_cost**\
-  Estimates the storage cost for a piece of data.
 
 ### Client Methods for Public Data
 
@@ -21,8 +24,6 @@ The Data API enables storage of arbitrarily sized blobs on the Autonomi Network 
   Retrieves bytes from the network using an address.
 * **data\_put\_public**\
   Uploads bytes to the network and returns the price along with the address to access the data. (This address can be published so that others can access the data)
-* **data\_cost**\
-  Estimates the storage cost for a piece of data.
 
 ### Example
 
