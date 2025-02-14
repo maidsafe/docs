@@ -50,6 +50,8 @@ Files are built on top of regular data storage, allowing users to store entire f
 
 A Register is a 32-byte mutable memory register that allows storing and updating small pieces of data. Unlike immutable storage, Registers support updates, but each modification requires a payment. The entire update history is preserved, enabling users to traverse past versions when needed.
 
+More on Registers in the [Register API Reference](../api-reference/autonomi-client/register.md)
+
 ### Vault
 
 A Vault is a secure, encrypted storage system that helps users manage their data on the Autonomi Network. It allows storing owned Registers, Register keys, and references to file archives (both public and private). Users pay once for a fixed storage size and can update their Vault unlimited times for free. If more space is needed, Vault size can be upgraded at any time with an additional payment. With a Vault, users only need to retain a single key to access all their stored data on the network, simplifying data management and security.
