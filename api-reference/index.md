@@ -6,11 +6,15 @@ Autonomi provides several APIs for different aspects of the system:
 
 The [Autonomi Client API](autonomi-client/) is the core library for interacting with the Autonomi network. It provides:
 
-* Data storage and retrieval
-* Pointer management
-* Graph operations
-* File system operations
-* Error handling
+* [Data Storage And Retrieval](autonomi-client/data.md)
+* [Chunk Operations](autonomi-client/chunks.md)
+* [Pointer Management](autonomi-client/pointer.md)
+* [Graph Operations](autonomi-client/graphentry.md)
+* [Scratchpad Operations](autonomi-client/scratchpad.md)
+* [Register Operations](autonomi-client/register.md)
+* [Vault Operations](autonomi-client/vault.md)
+* [File System Operations](autonomi-client/files.md)
+* [BLS Cryptographic Keys Handling](../core-concepts/bls-keys.md)
 
 ## Node API
 

@@ -41,4 +41,4 @@ Work in progress..
 
 ## Testing Payments
 
-When testing your application, you can use the local development environment which provides a test EVM network with a pre-funded wallet. See the [Local Network Setup](local_network.md) Guide for details.
+When testing your application, you can use the local development environment which provides a test EVM network with a pre-funded wallet. See the [Local Network Setup](local-network.md) Guide for details.

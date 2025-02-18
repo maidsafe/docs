@@ -91,7 +91,7 @@ Test your installation by running a simple client initialization:
 ```rust
 use autonomi::Client;
 
-let client = Client::init_local().await?;
+let client = Client::init().await.expect("Could not initialize the client");
 println!("Client initialized successfully");
 ```
 {% endtab %}
@@ -100,7 +100,7 @@ println!("Client initialized successfully");
 ```python
 from autonomi_client import Client
 
-client = await Client.init_local()
+client = await Client.init()
 print('Client initialized successfully')
 ```
 {% endtab %}
@@ -108,9 +108,13 @@ print('Client initialized successfully')
 
 ## Next Steps
 
+* Quick Start Guides:
+  * [Quick Start Guide](../how-to-guides/quick-start-guide.md)
+  * [Python app Tutorial](../how-to-guides/build-apps-with-python.md)
+  * [Rust app Tutorial](../how-to-guides/build-apps-with-rust.md)
+  * [Local Network Setup](../how-to-guides/local-network.md)
 * API References:
   * [Autonomi Client](../api-reference/autonomi-client/)
   * [Ant Node](../api-reference/ant-node.md)
   * [BLS Threshold Crypto](../api-reference/blsttc.md)
   * [Self Encryption](../api-reference/self-encryption.md)
-* [Local Network Setup](../how-to-guides/local_network.md)
