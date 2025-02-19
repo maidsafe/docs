@@ -8,17 +8,17 @@
 
 ## Core Concepts
 
-* [Data Types](core-concepts/data_types.md)
-* [Data Storage](core-concepts/data_storage.md)
+* [Data Types](core-concepts/data-types.md)
+* [Data Storage](core-concepts/data-storage.md)
 * [BLS Keys](core-concepts/bls-keys.md)
 
 ## How To Guides
 
 * [Quick Start Guide](how-to-guides/quick-start-guide.md)
-* [Local Network Setup Guide](how-to-guides/local_network.md)
+* [Local Network Setup Guide](how-to-guides/local-network.md)
 * [Payments Guide](how-to-guides/payments.md)
-* [Build Apps with Python](how-to-guides/build_apps_with_python.md)
-* [Build Apps with Rust](how-to-guides/build_apps_with_rust.md)
+* [Build Apps with Python](how-to-guides/build-apps-with-python.md)
+* [Build Apps with Rust](how-to-guides/build-apps-with-rust.md)
 
 ## API Reference
 
@@ -29,7 +29,7 @@
   * [Pointer](api-reference/autonomi-client/pointer.md)
   * [Register](api-reference/autonomi-client/register.md)
   * [Scratchpad](api-reference/autonomi-client/scratchpad.md)
-  * [BLS Keys](api-reference/autonomi-client/bls-keys.md)
+  * [BLS Keys](core-concepts/bls-keys.md)
 * [Node API](api-reference/ant-node.md)
 * [BLS Threshold Crypto](api-reference/blsttc.md)
 * [Self Encryption](api-reference/self-encryption.md)

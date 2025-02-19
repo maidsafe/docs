@@ -8,11 +8,16 @@ Autonomi is a decentralised data and communications platform designed to provide
 
 ## Quick Links
 
-* [Installation Guide](getting-started/installation.md)
+* Quick Start Guides
+  * [Installation Guide](getting-started/installation.md)
+  * [Quick Start Guide](how-to-guides/quick-start-guide.md)
+  * [Local Network Setup](how-to-guides/local-network.md)
+  * [Build Apps with Python](how-to-guides/build-apps-with-python.md)
+  * [Build Apps with Rust](how-to-guides/build-apps-with-rust.md)
 * Core Concepts:
-  * [Data Types](core-concepts/data_types.md) - Understanding the fundamental data structures
-  * [Data Storage](core-concepts/data_storage.md) - How data is stored and retrieved
-  * [Local Network Setup](how-to-guides/local_network.md) - Setting up a local development environment
+  * [Data Types](core-concepts/data-types.md) - Understanding the fundamental data structures
+  * [Data Storage](core-concepts/data-storage.md) - How data is stored and retrieved
+  * [Local Network Setup](how-to-guides/local-network.md) - Setting up a local development environment
 
 ### API References
 
@@ -31,16 +36,16 @@ Autonomi provides client libraries for multiple languages:
 ```rust
 use autonomi::Client;
 
-let client = Client::new()?;
+let client = Client::init()?;
 ```
 {% endtab %}
 
 {% tab title="Python" %}
 ```python
-from autonomi_client import Client
+from autonomi-client import Client
 
 client = Client()
-await client.connect()
+await client.init()
 ```
 {% endtab %}
 {% endtabs %}
