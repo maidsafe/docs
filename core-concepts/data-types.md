@@ -12,7 +12,7 @@ Below is a detailed description of the native data types.
 
 ### Chunk
 
-A Chunk is a 1MB block of raw bytes that serves as a fundamental unit of storage in the Autonomi Network. It is content-addressed, meaning its address is derived from its content hash. Chunks are immutable, ensuring that once stored, their data cannot be modified. They are also self-verifiable, as their integrity can be confirmed by computing the hash and comparing it to the address.
+A Chunk is a 4MB block of raw bytes that serves as a fundamental unit of storage in the Autonomi Network. It is content-addressed, meaning its address is derived from its content hash. Chunks are immutable, ensuring that once stored, their data cannot be modified. They are also self-verifiable, as their integrity can be confirmed by computing the hash and comparing it to the address.
 
 More on Chunks in the [Chunk API Reference](../api-reference/autonomi-client/chunks.md)
 
