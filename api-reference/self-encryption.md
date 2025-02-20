@@ -23,12 +23,12 @@ pip install self-encryption
 
 ### DataMap
 
-Holds the information required to recover the content of the encrypted file, stored as a vector of `ChunkInfo` (list of file's chunk hashes). Only files larger than 3072 bytes (3 \* MIN\_CHUNK\_SIZE) can be self-encrypted.
+Holds the information required to recover the content of the encrypted file, stored as a vector of `ChunkInfo` (list of file's chunk hashes). Only files larger than 3 bytes (3 \* MIN\_CHUNK\_SIZE) can be self-encrypted.
 
 ### Chunk Sizes
 
 * `MIN_CHUNK_SIZE`: 1 byte
-* `MAX_CHUNK_SIZE`: 1 MiB (before compression)
+* `MAX_CHUNK_SIZE`: This is actually adjustable, but defaults to 1 MiB, we use 4 MiB on the Network (before compression)
 * `MIN_ENCRYPTABLE_BYTES`: 3 bytes
 
 ## Streaming Operations (Recommended)
