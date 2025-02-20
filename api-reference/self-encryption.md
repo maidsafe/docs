@@ -1,6 +1,6 @@
 # Self Encryption
 
-A file content self-encryptor that provides convergent encryption on file-based data. It produces a `DataMap` type and several chunks of encrypted data. Each chunk is up to 1MB in size and has an index and a name (SHA3-256 hash of the content), allowing chunks to be self-validating.
+A file content self-encryptor that provides convergent encryption on file-based data. It produces a `DataMap` type and several chunks of encrypted data. Each chunk is up to 4MB in size and has an index and a name (SHA3-256 hash of the content), allowing chunks to be self-validating.
 
 ## Installation
 

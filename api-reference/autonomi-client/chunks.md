@@ -2,7 +2,7 @@
 
 Chunks are native data types in the Autonomi Network:
 
-* **Size:** 1MB of raw bytes
+* **Size:** 4MB of raw bytes
 * **Content-addressed:** Address is the hash of its content
 * **Immutable & self-verifiable:** Once stored, data cannot be modified, and its integrity can be verified by computing the hash and comparing it to the address.
 
