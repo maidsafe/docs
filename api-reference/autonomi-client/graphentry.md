@@ -75,3 +75,22 @@ async fn graph_entry_example() -> Result<()> {
     Ok(())
 }
 ```
+
+### Forks
+
+It's possible for multiple graph entries to exist for the same key. This can happen when two nodes store (unique) entries simultaneously. These entries are replicated and nodes will store them all (up to a certain amount).
+
+The graph entry API will surface these forks as errors. In case of Rust, the `graph_entry_get` will return `Result::Err(GraphError::Fork(Vec<GraphEntry>))`, which holds all entries found for the same key.
+
+```rust
+use autonomi::client::data_types::graph::GraphError;
+let graph_entry_addr = todo!();
+let entry = match self.graph_entry_get(graph_entry_addr).await {
+    Ok(entry) => entry,
+    Err(GraphError::Fork(entries)) => {
+        // Fork detected.
+        todo!();
+    }
+    Err(err) => todo!(),
+};
+```
