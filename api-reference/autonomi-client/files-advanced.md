@@ -13,7 +13,7 @@ pub struct PublicArchive {
     ///           |         |         Metadata of the file
     ///           |         |         |
     ///           V         V         V
-    map: BTreeMap<PathBuf, (DataAddr, Metadata)>,
+    map: BTreeMap<PathBuf, (DataAddress, Metadata)>,
 }
 
 pub struct PrivateArchive {
