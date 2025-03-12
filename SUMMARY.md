@@ -30,6 +30,7 @@
   * [Register](api-reference/autonomi-client/register.md)
   * [Scratchpad](api-reference/autonomi-client/scratchpad.md)
   * [BLS Keys](core-concepts/bls-keys.md)
+  * [Analyze](api-reference/autonomi-client/analyze.md)
 * [Node API](api-reference/ant-node.md)
 * [BLS Threshold Crypto](api-reference/blsttc.md)
 * [Self Encryption](api-reference/self-encryption.md)
