@@ -48,6 +48,14 @@ client = Client()
 await client.init()
 ```
 {% endtab %}
+
+{% tab title="Node.js" %}
+```js
+import { Client } from '@withautonomi/autonomi'
+
+const client = await Client.init()
+```
+{% endtab %}
 {% endtabs %}
 
 ## Building from Source
@@ -87,6 +95,24 @@ uv sync
 
 # Build and install the package
 maturin develop --uv
+```
+{% endtab %}
+
+{% tab title="Node.js" %}
+```bash
+# Clone the repository
+git clone https://github.com/maidsafe/autonomi.git
+cd autonomi/nodejs
+
+# Install NAPI RS command-line tool
+yarn global add @napi-rs/cli
+# Install NPM dependencies
+yarn install
+# Build the node addon
+yarn build
+
+# Run tests
+yarn test
 ```
 {% endtab %}
 {% endtabs %}
