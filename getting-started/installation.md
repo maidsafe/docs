@@ -32,6 +32,12 @@ cargo add autonomi
 pip install autonomi-client
 ```
 {% endtab %}
+
+{% tab title="Node.js" %}
+```bash
+npm install `@withautonomi/autonomi`
+```
+{% endtab %}
 {% endtabs %}
 
 ### Ant Node
@@ -47,6 +53,10 @@ cargo add ant-node
 ```bash
 pip install antnode
 ```
+{% endtab %}
+
+{% tab title="Node.js" %}
+Ant Node is not available for Node.js currently.
 {% endtab %}
 {% endtabs %}
 
@@ -64,6 +74,10 @@ cargo add blsttc
 pip install blsttc
 ```
 {% endtab %}
+
+{% tab title="Node.js" %}
+`blsttc` is not available for Node.js currently.
+{% endtab %}
 {% endtabs %}
 
 ### Self Encryption
@@ -79,6 +93,10 @@ cargo add self_encryption
 ```bash
 pip install self-encryption
 ```
+{% endtab %}
+
+{% tab title="Node.js" %}
+Self Encryption is not available for Node.js currently.
 {% endtab %}
 {% endtabs %}
 
@@ -102,6 +120,15 @@ from autonomi_client import Client
 
 client = await Client.init()
 print('Client initialized successfully')
+```
+{% endtab %}
+
+{% tab title="Node.js" %}
+```js
+import { Client } from '@withautonomi/autonomi'
+
+const client = await Client.init()
+console.log('Client initialized successfully')
 ```
 {% endtab %}
 {% endtabs %}
