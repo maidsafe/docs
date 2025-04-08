@@ -18,6 +18,12 @@ cargo add autonomi
 pip install autonomi
 ```
 {% endtab %}
+
+{% tab title="Node.js" %}
+```bash
+npm install @withautonomi/autonomi
+```
+{% endtab %}
 {% endtabs %}
 
 ## Get Started
