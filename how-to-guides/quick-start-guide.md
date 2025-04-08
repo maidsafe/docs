@@ -25,6 +25,12 @@ cargo add autonomi
 {% tab title="Python" %}
 pip install autonomi-client
 {% endtab %}
+
+{% tab title="Node.js" %}
+```bash
+npm install @withautonomi/autonomi
+```
+{% endtab %}
 {% endtabs %}
 
 ### Setup a Client
@@ -54,6 +60,14 @@ async def main():
     client = await Client.init()
 
 asyncio.run(main())
+```
+{% endtab %}
+
+{% tab title="Node.js" %}
+```js
+import { Client } from '@withautonomi/autonomi'
+
+const client = await Client.init()
 ```
 {% endtab %}
 {% endtabs %}
@@ -114,6 +128,22 @@ async def main():
         f.write(dog_picture)
 
 asyncio.run(main())
+```
+{% endtab %}
+
+{% tab title="Node.js" %}
+```js
+import { Client, DataAddress } from '@withautonomi/autonomi'
+import fs from 'node:fs/promises'
+
+const client = await Client.init()
+// Data address of the dog picture
+const dataAddress = DataAddress.fromHex("a7d2fdbb975efaea25b7ebe3d38be4a0b82c1d71e9b89ac4f37bc9f8677826e0")
+// Get the bytes of the dog picture
+const dogPicture = await client.dataGetPublic(dataAddress)
+
+// Write the bytes of the dog picture to a file
+await fs.writeFile('lucky.jpg', dogPicture);
 ```
 {% endtab %}
 {% endtabs %}

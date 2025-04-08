@@ -22,6 +22,10 @@ uv pip install antnode
 pip install antnode.
 ```
 {% endtab %}
+
+{% tab title="Node.js" %}
+The node API is not yet available for Node.js.
+{% endtab %}
 {% endtabs %}
 
 ## Start a Single Node
