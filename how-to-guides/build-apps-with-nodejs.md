@@ -8,20 +8,20 @@ This guide will help you get started with building apps with Autonomi starting f
 4. [Upload and retrieve data with Node.js](build_apps_with_nodejs.md#upload-and-retrieve-data-with-nodejs)
 
 {% hint style="info" %}
-This has guide has been tested on MacOS, it should work on Linux or other unixes as well, but the commands might be slightly different for Windows (unless you are using [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)).
+This has guide has been tested on MacOS and Linux, but the commands might be slightly different for Windows (unless you are using [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)).
 {% endhint %}
 
 ## Prerequisites
 
 First let's install the required tools to get started:
 
-* **Node.js** with its NPM command-line tool
+* [**Node.js**](https://nodejs.org/en/download) with its NPM command-line tool to install dependencies and run your code
 
 Once Node.js is installed, let's proceed to create a local testnet.
 
 ## Create a local testnet
 
-See [Local Network Setup](how-to-guides/local-network.md).
+See [Local Network Setup](./local-network.md).
 
 ## Connect to the testnet with Node.js
 
