@@ -83,7 +83,7 @@ a7d2fdbb975efaea25b7ebe3d38be4a0b82c1d71e9b89ac4f37bc9f8677826e0
 {% tabs %}
 {% tab title="Rust" %}
 ```rust
-use autonomi::client::address::str_to_addr;
+use autonomi::data::DataAddress;
 use autonomi::Client;
 
 #[tokio::main]
@@ -94,7 +94,7 @@ async fn main() {
 
     // Data address of the dog picture
     let data_address =
-        str_to_addr("a7d2fdbb975efaea25b7ebe3d38be4a0b82c1d71e9b89ac4f37bc9f8677826e0")
+        DataAddress::from_hex("a7d2fdbb975efaea25b7ebe3d38be4a0b82c1d71e9b89ac4f37bc9f8677826e0")
             .expect("Invalid data address");
 
     // Get the bytes of the dog picture
