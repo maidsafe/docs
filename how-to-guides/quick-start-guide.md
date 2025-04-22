@@ -17,13 +17,21 @@ First import our Autonomi dependency using the language you love:
 
 {% tabs %}
 {% tab title="Rust" %}
-```rust
+```bash
 cargo add autonomi
+
+# Tokio is used for the async runtime, but other ones can be used as well.
+cargo add tokio
 ```
 {% endtab %}
 
 {% tab title="Python" %}
-pip install autonomi-client
+```bash
+# uv is used to create the virtual environment, but other ones can be used as well.
+uv venv
+
+uv pip install autonomi-client
+```
 {% endtab %}
 
 {% tab title="Node.js" %}
@@ -111,14 +119,14 @@ async fn main() {
 
 {% tab title="Python" %}
 ```python
-from autonomi_client import Client
+from autonomi_client import Client, DataAddress
 import asyncio
 
 async def main():
     client = await Client.init()
     
     # Data address of the dog picture
-    data_address = "a7d2fdbb975efaea25b7ebe3d38be4a0b82c1d71e9b89ac4f37bc9f8677826e0"
+    data_address = DataAddress.from_hex("a7d2fdbb975efaea25b7ebe3d38be4a0b82c1d71e9b89ac4f37bc9f8677826e0")
 
     # Get the bytes of the dog picture
     dog_picture = await client.data_get_public(data_address)
