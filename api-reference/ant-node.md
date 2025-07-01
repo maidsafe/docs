@@ -24,7 +24,9 @@ pip install antnode.
 {% endtab %}
 
 {% tab title="Node.js" %}
-The node API is not yet available for Node.js.
+```console
+npm install @withautonomi/ant-node
+```
 {% endtab %}
 {% endtabs %}
 
@@ -62,6 +64,22 @@ async fn main() {
 }
 ```
 {% endtab %}
+
+{% tab title="Node.js" %}
+```ts
+import { NodeSpawner } from '@withautonomi/ant-node'
+
+const bootstrapPeers = ['/ip4/209.97.181.193/udp/57402/quic-v1/p2p/12D3KooWHygG9a7inESky2KpvHQmbX5o2UC8D29B5njdshAcv1p6'];
+const spawner = new NodeSpawner({
+    // Using the genesis node as a bootstrap node for example
+    initialPeers: bootstrapPeers,
+});
+const runningNode = await spawner.spawn();
+const listenAddrs = await runningNode.getListenAddrsWithPeerId();
+
+console.log(`Node started with listen addrs: ${listenAddrs}`);
+```
+{% endtab %}
 {% endtabs %}
 
 ## Start a Network
@@ -94,6 +112,30 @@ async fn main() {
         println!("Node listening on: {:?}", node.get_listen_addrs().await);
     }
 }
+```
+{% endtab %}
+
+{% tab title="Node.js" %}
+```ts
+import { NetworkSpawner, Network } from '@withautonomi/ant-node';
+import { setTimeout } from 'node:timers/promises';
+
+const networkSize = 3;
+const spawner = new NetworkSpawner({
+    local: true,
+    size: networkSize,
+}, Network.fromString('evm-arbitrum-one'));
+const runningNetwork = await spawner.spawn();
+const runningNodes = await runningNetwork.runningNodes();
+
+// Wait for nodes to dial each other
+await setTimeout(10 * 1000);
+
+for (const node of runningNodes) {
+    console.log(`Node listening on: ${await node.getListenAddrs()}`);
+}
+
+await runningNetwork.shutdown();
 ```
 {% endtab %}
 {% endtabs %}
