@@ -2,13 +2,14 @@
 
 A file content self-encryptor that provides convergent encryption on file-based data. It produces a `DataMap` type and several chunks of encrypted data. Each chunk is up to 4MB in size and has an index and a name (SHA3-256 hash of the content), allowing chunks to be self-validating.
 
+# Quick Start Guide
+
 ## Installation
 
 {% tabs %}
 {% tab title="Rust" %}
-```toml
-[dependencies]
-self_encryption = "0.31.0"
+```console
+cargo add self_encryption
 ```
 {% endtab %}
 
@@ -19,125 +20,34 @@ pip install self-encryption
 {% endtab %}
 {% endtabs %}
 
-## Core Concepts
-
-### DataMap
-
-Holds the information required to recover the content of the encrypted file, stored as a vector of `ChunkInfo` (list of file's chunk hashes). Only files larger than 3 bytes (3 \* MIN\_CHUNK\_SIZE) can be self-encrypted.
-
-### Chunk Sizes
-
-* `MIN_CHUNK_SIZE`: 1 byte
-* `MAX_CHUNK_SIZE`: This is actually adjustable, but defaults to 1 MiB, we use 4 MiB on the Network (before compression)
-* `MIN_ENCRYPTABLE_BYTES`: 3 bytes
-
-## Streaming Operations (Recommended)
-
-### Streaming File Encryption
-
-{% tabs %}
-{% tab title="Rust" %}
-```rust
-use self_encryption::{streaming_encrypt_from_file, ChunkStore};
-use std::path::Path;
-
-// Implement your chunk store
-struct MyChunkStore {
-    // Your storage implementation
-}
-
-impl ChunkStore for MyChunkStore {
-    fn put(&mut self, name: &[u8], data: &[u8]) -> Result<(), Error> {
-        // Store the chunk
-    }
-
-    fn get(&self, name: &[u8]) -> Result<Vec<u8>, Error> {
-        // Retrieve the chunk
-    }
-}
-
-// Create chunk store instance
-let store = MyChunkStore::new();
-
-// Encrypt file using streaming
-let file_path = Path::new("my_file.txt");
-let data_map = streaming_encrypt_from_file(file_path, store).await?;
-```
-{% endtab %}
-
-{% tab title="Python" %}
-```python
-from self_encryption import streaming_encrypt_from_file, ChunkStore
-from pathlib import Path
-from typing import Optional
-
-# Implement your chunk store
-class MyChunkStore(ChunkStore):
-    def put(self, name: bytes, data: bytes) -> None:
-        # Store the chunk
-        pass
-
-    def get(self, name: bytes) -> Optional[bytes]:
-        # Retrieve the chunk
-        pass
-
-# Create chunk store instance
-store = MyChunkStore()
-
-# Encrypt file using streaming
-file_path = Path("my_file.txt")
-data_map = streaming_encrypt_from_file(file_path, store)
+{% tab title="Node.js" %}
+```console
+npm install @withautonomi/self-encryption
 ```
 {% endtab %}
 {% endtabs %}
 
-### Streaming File Decryption
+## Simple Example
 
 {% tabs %}
 {% tab title="Rust" %}
 ```rust
-use self_encryption::streaming_decrypt_from_storage;
-use std::path::Path;
+use self_encryption::{bytes::Bytes, decrypt, encrypt};
 
-// Decrypt to file using streaming
-let output_path = Path::new("decrypted_file.txt");
-streaming_decrypt_from_storage(&data_map, store, output_path).await?;
-```
-{% endtab %}
+fn main() -> self_encryption::Result<()> {
+    // Encrypt bytes in memory
+    let data = Bytes::from("Small data to encrypt");
+    let (data_map, encrypted_chunks) = encrypt(data.clone())?;
 
-{% tab title="Python" %}
-```python
-from self_encryption import streaming_decrypt_from_storage
-from pathlib import Path
+    // Decrypt using the data map and chunks
+    let decrypted = decrypt(&data_map, &encrypted_chunks)?;
 
-# Decrypt to file using streaming
-output_path = Path("decrypted_file.txt")
-streaming_decrypt_from_storage(data_map, store, output_path)
-```
-{% endtab %}
-{% endtabs %}
+    // Original data and decrypted data will be the same
+    assert_eq!(data, decrypted);
 
-## In-Memory Operations (Small Files)
+    Ok(())
+}
 
-### Basic Encryption/Decryption
-
-{% tabs %}
-{% tab title="Rust" %}
-```rust
-use self_encryption::{encrypt, decrypt};
-
-// Encrypt bytes in memory
-let data = b"Small data to encrypt";
-let (data_map, encrypted_chunks) = encrypt(data)?;
-
-// Decrypt using retrieval function
-let decrypted = decrypt(
-    &data_map,
-    |name| {
-        // Retrieve chunk by name from your storage
-        Ok(chunk_data)
-    }
-)?;
 ```
 {% endtab %}
 
@@ -149,143 +59,96 @@ from self_encryption import encrypt, decrypt
 data = b"Small data to encrypt"
 data_map, encrypted_chunks = encrypt(data)
 
-# Decrypt using retrieval function
-def get_chunk(name: bytes) -> bytes:
-    # Retrieve chunk by name from your storage
-    return chunk_data
+# Decrypt using the data map and chunks
+decrypted = decrypt(data_map, encrypted_chunks)
+```
+{% endtab %}
 
-decrypted = decrypt(data_map, get_chunk)
+{% tab title="Node.js" %}
+```ts
+import { encrypt, decrypt } from '@withautonomi/self-encryption'
+import assert from 'assert'
+
+const data = Buffer.from("Hello, World!");
+const { dataMap, chunks } = encrypt(data)
+const dataDecrypted = decrypt(dataMap, chunks)
+assert(data.equals(dataDecrypted))
 ```
 {% endtab %}
 {% endtabs %}
 
-## Chunk Store Implementations
+## Core Concepts
 
-### In-Memory Store
+### DataMap
+
+The data map holds information required to recover the content of the encrypted data. It contains a vector of chunk 'infos', a list of file's chunk hashes. Only data larger than 3 bytes can be self-encrypted.
+
+### Chunk Sizes
+
+* `MIN_CHUNK_SIZE`: 1 byte
+* `MAX_CHUNK_SIZE`: Defaults to 1 MiB but Autonomi sets this to 4 MiB
+* `MIN_ENCRYPTABLE_BYTES`: 3 bytes
+
+## Streaming Operations
+
+Some functions use streaming to reduce the memory footprint of the encryption operation. These functions take callbacks that store or retrieve chunks.
+
+### Streaming File Encryption
+
+An example is to use an in-memory data type, like the `HashMap` in Rust:
 
 {% tabs %}
 {% tab title="Rust" %}
 ```rust
-use std::collections::HashMap;
+use self_encryption::{
+    Result, XorName, bytes::Bytes, streaming_decrypt_from_storage,
+    streaming_encrypt_from_file,
+};
+use std::{
+    collections::HashMap,
+    path::Path,
+    sync::{Arc, Mutex},
+};
 
-struct MemoryStore {
-    chunks: HashMap<Vec<u8>, Vec<u8>>,
-}
+let storage = Arc::new(Mutex::new(HashMap::new()));
 
-impl ChunkStore for MemoryStore {
-    fn put(&mut self, name: &[u8], data: &[u8]) -> Result<(), Error> {
-        self.chunks.insert(name.to_vec(), data.to_vec());
-        Ok(())
-    }
+let storage_clone = Arc::clone(&storage);
+let store = move |hash: XorName, content: Bytes| -> Result<()> {
+    // Store encrypted chunk into the map by its hash.
+    let _ = storage_clone.lock().unwrap().insert(hash, content);
+    Ok(())
+};
 
-    fn get(&self, name: &[u8]) -> Result<Vec<u8>, Error> {
-        self.chunks.get(name)
-            .cloned()
-            .ok_or(Error::NoSuchChunk)
-    }
-}
-```
-{% endtab %}
+// Encrypt the data that lives in the file and store it into the `HashMap`.
+let file_path = Path::new("Cargo.toml");
+let data_map = streaming_encrypt_from_file(file_path, store).unwrap();
 
-{% tab title="Python" %}
-```python
-from self_encryption import ChunkStore
-from typing import Dict, Optional
+let fetch = |hashes: &[XorName]| -> Result<Vec<Bytes>> {
+    Ok(hashes
+        .iter()
+        // Take the hashes and map them to their encrypted contents
+        .map(|hash| {
+            storage
+                .lock()
+                .expect("lock should not be poisoned")
+                .get(hash)
+                .expect("hash should be in storage")
+                .clone()
+        })
+        .collect())
+};
+streaming_decrypt_from_storage(
+    &data_map,
+    Path::new("Cargo.toml.decrypted"),
+    fetch,
+)
+.unwrap();
 
-class MemoryStore(ChunkStore):
-    def __init__(self):
-        self.chunks: Dict[bytes, bytes] = {}
-
-    def put(self, name: bytes, data: bytes) -> None:
-        self.chunks[name] = data
-
-    def get(self, name: bytes) -> Optional[bytes]:
-        return self.chunks.get(name)
-```
-{% endtab %}
-{% endtabs %}
-
-### Disk-Based Store
-
-{% tabs %}
-{% tab title="Rust" %}
-```rust
-use std::path::PathBuf;
-use std::fs;
-
-struct DiskStore {
-    root_dir: PathBuf,
-}
-
-impl ChunkStore for DiskStore {
-    fn put(&mut self, name: &[u8], data: &[u8]) -> Result<(), Error> {
-        let path = self.root_dir.join(hex::encode(name));
-        fs::write(path, data)?;
-        Ok(())
-    }
-
-    fn get(&self, name: &[u8]) -> Result<Vec<u8>, Error> {
-        let path = self.root_dir.join(hex::encode(name));
-        fs::read(path).map_err(|_| Error::NoSuchChunk)
-    }
-}
-
-impl DiskStore {
-    fn new<P: Into<PathBuf>>(root: P) -> Self {
-        let root_dir = root.into();
-        fs::create_dir_all(&root_dir).expect("Failed to create store directory");
-        Self { root_dir }
-    }
-}
-```
-{% endtab %}
-
-{% tab title="Python" %}
-```python
-from pathlib import Path
-from typing import Optional
-import os
-
-class DiskStore(ChunkStore):
-    def __init__(self, root_dir: Path):
-        self.root_dir = root_dir
-        self.root_dir.mkdir(parents=True, exist_ok=True)
-
-    def put(self, name: bytes, data: bytes) -> None:
-        path = self.root_dir / name.hex()
-        path.write_bytes(data)
-
-    def get(self, name: bytes) -> Optional[bytes]:
-        path = self.root_dir / name.hex()
-        try:
-            return path.read_bytes()
-        except FileNotFoundError:
-            return None
+// Verify that the decrypted file matches the original
+assert_eq!(
+    std::fs::read(file_path).unwrap(),
+    std::fs::read("Cargo.toml.decrypted").unwrap()
+);
 ```
 {% endtab %}
 {% endtabs %}
-
-## Error Handling
-
-The library provides an `Error` enum for handling various error cases:
-
-```rust
-pub enum Error {
-    NoSuchChunk,
-    ChunkTooSmall,
-    ChunkTooLarge,
-    InvalidChunkSize,
-    Io(std::io::Error),
-    Serialisation(Box<bincode::ErrorKind>),
-    Compression(std::io::Error),
-    // ... other variants
-}
-```
-
-## Best Practices
-
-1. Use streaming operations (`streaming_encrypt_from_file` and `streaming_decrypt_from_storage`) for large files
-2. Use basic `encrypt`/`decrypt` functions for small in-memory data
-3. Implement proper error handling for chunk store operations
-4. Verify chunks using their content hash when retrieving
-5. Use parallel operations when available for better performance
