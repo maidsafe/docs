@@ -104,3 +104,82 @@ console.log("Retrieved data: ", retrievedData.toString())
 > For private data, use the `dataPut` and `dataGet` methods instead!
 
 Congrats! If you got this far, you are ready to start building apps that can store data on Autonomi! 🎉
+
+## Working with Registers
+
+Registers are mutable data structures that allow you to store updateable content with versioned history. Here's how to use them:
+
+```js
+import { Client, Network, Wallet, PaymentOption, SecretKey } from '@withautonomi/autonomi'
+
+// Initialize client and wallet (same as before)
+const privateKey = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
+const wallet = Wallet.newFromPrivateKey(new Network(true), privateKey)
+const client = await Client.initLocal()
+const paymentOption = PaymentOption.fromWallet(wallet)
+
+// Generate keys for register
+const mainKey = SecretKey.random()
+const registerKey = Client.registerKeyFromName(mainKey, "my-app-config")
+
+// Create register content (max 32 bytes)
+const initialConfig = Client.registerValueFromBytes(Buffer.from("version: 1.0"))
+
+// Check cost and create register
+const cost = await client.registerCost(registerKey.publicKey())
+console.log(`Register creation cost: ${cost} AttoTokens`)
+
+const {cost: creationCost, addr} = await client.registerCreate(
+  registerKey, initialConfig, paymentOption
+)
+console.log(`Register created at: ${addr.toHex()}`)
+
+// Wait for network replication
+await new Promise(resolve => setTimeout(resolve, 5000))
+
+// Read current value
+const currentValue = await client.registerGet(addr)
+console.log(`Current config: ${currentValue}`)
+
+// Update the register
+const updatedConfig = Client.registerValueFromBytes(Buffer.from("version: 1.1"))
+const updateCost = await client.registerUpdate(registerKey, updatedConfig, paymentOption)
+console.log(`Update cost: ${updateCost} AttoTokens`)
+
+// Wait for replication
+await new Promise(resolve => setTimeout(resolve, 5000))
+
+// Get complete history
+const history = client.registerHistory(addr)
+const allVersions = await history.collect()
+console.log(`Config history (${allVersions.length} versions):`)
+allVersions.forEach((version, i) => {
+  console.log(`  ${i}: ${version}`)
+})
+```
+
+### Key Register Features:
+
+* **Mutable**: Can be updated with new content while preserving history
+* **Versioned**: All previous versions are permanently accessible  
+* **Owned**: Only the key holder can update the register
+* **32-byte limit**: Each register value is limited to 32 bytes
+* **Paid updates**: Both creation and updates require payment
+
+### Common Register Use Cases:
+
+1. **Application Configuration**: Store app settings that need updates
+2. **Status Tracking**: Maintain current state with full history
+3. **Version Control**: Track document versions
+4. **Counters**: Implement distributed counters
+5. **Metadata**: Store changeable file or app metadata
+
+### Register API Methods:
+
+* `client.registerCost(publicKey)` - Calculate creation cost
+* `client.registerCreate(key, content, payment)` - Create new register
+* `client.registerGet(address)` - Get current register value
+* `client.registerUpdate(key, content, payment)` - Update register content  
+* `client.registerHistory(address)` - Get version history iterator
+* `Client.registerKeyFromName(mainKey, name)` - Generate deterministic key
+* `Client.registerValueFromBytes(buffer)` - Create RegisterValue from Buffer

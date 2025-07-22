@@ -161,6 +161,79 @@ asyncio.run(main())
 
 Congrats! If you got this far, you are ready to start building apps that can store data on Autonomi! 🎉
 
+## Working with Registers
+
+Registers are mutable data structures that allow you to store updateable content with versioned history. Here's how to use them:
+
+```python
+from autonomi_client import Client, Network, Wallet, PaymentOption, SecretKey
+import asyncio
+
+async def register_example():
+    # Initialize client and wallet (same as before)
+    private_key = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
+    network = Network(True)
+    wallet = Wallet.new_from_private_key(network, private_key)
+    client = await Client.init_local()
+    payment_option = PaymentOption.wallet(wallet)
+    
+    # Generate keys for register
+    main_key = SecretKey.random()
+    register_key = Client.register_key_from_name(main_key, "my-app-config")
+    
+    # Create register content (max 32 bytes)
+    initial_config = Client.register_value_from_bytes(b"version: 1.0")
+    
+    # Check cost and create register
+    cost = await client.register_cost(register_key.public_key())
+    print(f"Register creation cost: {cost} AttoTokens")
+    
+    creation_cost, address = await client.register_create(
+        register_key, initial_config, payment_option)
+    print(f"Register created at: {address.to_hex()}")
+    
+    # Wait for network replication
+    await asyncio.sleep(5)
+    
+    # Read current value
+    current_value = await client.register_get(address)
+    print(f"Current config: {current_value}")
+    
+    # Update the register
+    updated_config = Client.register_value_from_bytes(b"version: 1.1")
+    update_cost = await client.register_update(register_key, updated_config, payment_option)
+    print(f"Update cost: {update_cost} AttoTokens")
+    
+    # Wait for replication
+    await asyncio.sleep(5)
+    
+    # Get complete history
+    history = client.register_history(address)
+    all_versions = await history.collect()
+    print(f"Config history ({len(all_versions)} versions):")
+    for i, version in enumerate(all_versions):
+        print(f"  {i}: {version}")
+
+# Run the example
+asyncio.run(register_example())
+```
+
+### Key Register Features:
+
+* **Mutable**: Can be updated with new content while preserving history
+* **Versioned**: All previous versions are permanently accessible
+* **Owned**: Only the key holder can update the register
+* **32-byte limit**: Each register value is limited to 32 bytes
+* **Paid updates**: Both creation and updates require payment
+
+### Common Register Use Cases:
+
+1. **Application Configuration**: Store app settings that need updates
+2. **Status Tracking**: Maintain current state with full history
+3. **Version Control**: Track document versions
+4. **Counters**: Implement distributed counters
+5. **Metadata**: Store changeable file or app metadata
+
 ## Going further
 
 The API offers many other tools to interact with the Network which you can find here: [Autonomi API Docs](https://docs.autonomi.com/developers/api-reference/python-api-reference).
