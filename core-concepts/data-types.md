@@ -42,6 +42,113 @@ A Pointer is a mutable reference to any native data type on the Autonomi Network
 
 Pointers are particularly useful for creating mutable references to immutable data, building linked data structures, and implementing dynamic content management systems.
 
+#### Basic Usage Examples
+
+**Rust Example:**
+```rust
+use autonomi::{Client, SecretKey, PublicKey};
+use autonomi::client::payment::PaymentOption;
+use autonomi::client::pointer::{Pointer, PointerTarget};
+use autonomi::chunk::ChunkAddress;
+use autonomi::AttoTokens;
+use eyre::Result;
+
+async fn basic_pointer_example() -> Result<()> {
+    // Initialize client and wallet
+    let client = Client::init_local().await?;
+    let wallet = get_funded_wallet();
+    let payment_option = PaymentOption::from(&wallet);
+
+    // Create a secret key for the pointer owner
+    let owner_key = SecretKey::random();
+    let public_key = owner_key.public_key();
+
+    // Create a target (e.g., a chunk address)
+    let chunk_addr = ChunkAddress::new(XorName::random(&mut rand::thread_rng()));
+    let target = PointerTarget::ChunkAddress(chunk_addr);
+
+    // Estimate the cost
+    let estimated_cost = client.pointer_cost(&public_key).await?;
+    println!("Estimated pointer cost: {estimated_cost}");
+
+    // Create the pointer
+    let (actual_cost, pointer_addr) = client
+        .pointer_create(&owner_key, target.clone(), payment_option)
+        .await?;
+    println!("Pointer created at {pointer_addr:?} with cost: {actual_cost}");
+
+    // Wait for replication
+    tokio::time::sleep(tokio::time::Duration::from_secs(5)).await;
+
+    // Retrieve the pointer
+    let retrieved_pointer = client.pointer_get(&pointer_addr).await?;
+    println!("Retrieved pointer: {retrieved_pointer:?}");
+
+    // Verify the pointer signature
+    if retrieved_pointer.verify_signature() {
+        println!("Pointer signature is valid!");
+    }
+
+    Ok(())
+}
+```
+
+**Python Example:**
+```python
+from autonomi_client import Client, Network, Wallet, PaymentOption, SecretKey, PointerTarget, ChunkAddress, Pointer
+import asyncio
+
+async def basic_pointer_example():
+    # Initialize client and wallet
+    private_key = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
+    network = Network(True)
+    wallet = Wallet.new_from_private_key(network, private_key)
+    client = await Client.init_local()
+
+    # Upload target data
+    target_data = b"Hello, I'm the target data!"
+    [cost, target_addr] = await client.data_put_public(target_data, PaymentOption.wallet(wallet))
+    
+    # Create pointer
+    key = SecretKey()
+    target = PointerTarget.new_chunk(ChunkAddress(target_addr))
+    pointer = Pointer(key, 0, target)
+    pointer_addr = await client.pointer_put(pointer, PaymentOption.wallet(wallet))
+    
+    # Retrieve and use pointer
+    retrieved_pointer = await client.pointer_get(pointer_addr)
+    retrieved_data = await client.data_get_public(retrieved_pointer.target.hex)
+    print(f"Retrieved: {retrieved_data.decode()}")
+```
+
+**Node.js Example:**
+```javascript
+import init, * as atnm from '../pkg/autonomi.js';
+
+async function basicPointerExample() {
+    // Initialize client and wallet
+    await init();
+    const client = await atnm.Client.connect([window.peer_addr]);
+    const wallet = atnm.getFundedWallet();
+    
+    // Upload target data
+    const targetData = new TextEncoder().encode("Hello, I'm the target data!");
+    const targetAddr = await client.putData(targetData, wallet);
+    
+    // Create pointer
+    const key = atnm.genSecretKey();
+    const target = atnm.PointerTarget.newChunk(targetAddr);
+    const pointer = new atnm.Pointer(key, 0, target);
+    const pointerAddr = await client.putPointer(pointer, wallet);
+    
+    // Retrieve and use pointer
+    const retrievedPointer = await client.getPointer(pointerAddr);
+    const retrievedData = await client.getData(retrievedPointer.target.hex);
+    const decodedData = new TextDecoder().decode(retrievedData);
+    console.log(`Retrieved: ${decodedData}`);
+}
+```
+
 More on Pointers in the [Pointer API Reference](../api-reference/autonomi-client/pointer.md)
 
 ### Scratchpad
