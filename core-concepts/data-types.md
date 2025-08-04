@@ -18,7 +18,29 @@ More on Chunks in the [Chunk API Reference](../api-reference/autonomi-client/chu
 
 ### Pointer
 
-A Pointer is a mutable reference to any native data type on the Autonomi Network. It stores an address that identifies the target data. Unlike immutable data, a Pointer follows a pay-once model but can be updated for free. To ensure consistency, it includes a version counter, preventing outdated writes. Pointers are owned by a public key, with their data stored at the owner’s address. Each update is signed by the owner, allowing verification through cryptographic signature checks.
+A Pointer is a mutable reference to any native data type on the Autonomi Network. It provides an indirection mechanism for referencing data stored elsewhere on the network.
+
+**Key Characteristics:**
+- **Key-addressed:** The network address is derived from a BLS public key, meaning each public key can only have one pointer
+- **Generic target:** Can reference any native data type including Chunks, GraphEntries, Scratchpads, and other Pointers
+- **Pay-once, free updates:** Initial creation requires payment, but subsequent updates are free
+- **Versioned & signed:** Includes a version counter (u64) and cryptographically verifiable signatures
+- **Owner-controlled:** Only the owner of the public key can update the pointer
+- **CRDT-like behavior:** Only the latest version (highest counter) is kept on the network
+
+**Structure:**
+- `owner`: The BLS public key that owns this pointer
+- `counter`: Version number (u64) that increases with each update
+- `target`: The address being pointed to (PointerTarget enum)
+- `signature`: Cryptographic signature ensuring authenticity
+
+**Target Types:**
+- `ChunkAddress`: Points to a chunk of data
+- `GraphEntryAddress`: Points to a graph entry
+- `PointerAddress`: Points to another pointer (enabling pointer chains)
+- `ScratchpadAddress`: Points to a scratchpad
+
+Pointers are particularly useful for creating mutable references to immutable data, building linked data structures, and implementing dynamic content management systems.
 
 More on Pointers in the [Pointer API Reference](../api-reference/autonomi-client/pointer.md)
 
