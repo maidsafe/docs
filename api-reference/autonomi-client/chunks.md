@@ -270,6 +270,8 @@ async fn chunk_error_handling() -> Result<()> {
 }
 ```
 
+> Other language support for error handling is in development
+
 ### Advanced Configuration
 
 #### Performance Tuning
