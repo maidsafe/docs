@@ -35,8 +35,10 @@ GraphEntry is a fundamental data type in the Autonomi Network that represents an
 * **graph\_entry\_cost**\
   Estimates the storage cost for a GraphEntry.
 
-## Python Examples
+## Code Examples
 
+{% tabs %}
+{% tab title="Python" %}
 ### Creating and Storing a GraphEntry
 
 ```python
@@ -176,9 +178,9 @@ async def handle_graph_entry_forks():
 # Run the example
 asyncio.run(handle_graph_entry_forks())
 ```
+{% endtab %}
 
-## NodeJS Examples
-
+{% tab title="Node.js" %}
 ### Creating and Storing a GraphEntry
 
 ```javascript
@@ -225,10 +227,9 @@ graphEntryExample().catch(console.error)
 
 ### Creating Linked GraphEntries
 
-```javascript
-import { Client, Network, Wallet, SecretKey, GraphEntry, GraphEntryAddress, PaymentOption } from '@withautonomi/autonomi'
-
-async function linkedGraphEntriesExample() {
+<pre class="language-javascript"><code class="lang-javascript">import { Client, Network, Wallet, SecretKey, GraphEntry, GraphEntryAddress, PaymentOption } from '@withautonomi/autonomi'
+<strong>
+</strong>async function linkedGraphEntriesExample() {
     // Initialize wallet and client
     const privateKey = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
     const wallet = Wallet.newFromPrivateKey(Network(true), privateKey)
@@ -296,7 +297,7 @@ async function linkedGraphEntriesExample() {
 
 // Run the example
 linkedGraphEntriesExample().catch(console.error)
-```
+</code></pre>
 
 ### Handling GraphEntry Forks
 
@@ -348,9 +349,9 @@ console.log(`GraphEntry address: ${hexAddr}`)
 const addrFromHex = GraphEntryAddress.from_hex(hexAddr)
 console.log(`Addresses match: ${addr.to_hex() === addrFromHex.to_hex()}`)
 ```
+{% endtab %}
 
-## Rust Example
-
+{% tab title="Rust" %}
 ```rust
 use autonomi::Client;
 use autonomi::client::payment::PaymentOption;
@@ -426,3 +427,5 @@ let entry = match self.graph_entry_get(graph_entry_addr).await {
     Err(err) => todo!(),
 };
 ```
+{% endtab %}
+{% endtabs %}
