@@ -83,14 +83,14 @@ async fn register_example() -> Result<()> {
 
 {% tab title="Python" %}
 ```python
-from autonomi_client import Client, Wallet, Network, PaymentOption, SecretKey
+from autonomi_client import Client, Wallet, EVMNetwork, PaymentOption, SecretKey
 import asyncio
 
 async def register_example():
     # Initialize client and wallet
     client = await Client.init_local()
     wallet = Wallet.new_from_private_key(
-        Network(True), 
+        EVMNetwork(True), 
         "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
     )
     payment = PaymentOption.wallet(wallet)

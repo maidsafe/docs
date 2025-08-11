@@ -83,13 +83,13 @@ touch main.py
 Open up the file in your favorite editor and add the following code:
 
 ```python
-from autonomi_client import Client, Network, Wallet
+from autonomi_client import Client, EVMNetwork, Wallet
 import asyncio
 
 async def main():
     # Initialize a wallet with the testnet private key
     private_key = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
-    network = Network(True)
+    network = EVMNetwork(True)
     wallet = Wallet.new_from_private_key(network, private_key)
     print(f"Wallet address: {wallet.address()}")
     print(f"Wallet balance: {await wallet.balance()}")
@@ -123,13 +123,13 @@ Congrats! You've just connected to the testnet! 🎉
 Next up let's upload some data to the testnet and retrieve it. We will be using the Autonomi data API for this. Expanding upon our previous work, change the `main.py` file to the following:
 
 ```python
-from autonomi_client import Client, Network, Wallet, PaymentOption
+from autonomi_client import Client, EVMNetwork, Wallet, PaymentOption
 import asyncio
 
 async def main():
     # Initialize a wallet with the testnet private key
     private_key = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
-    network = Network(True)
+    network = EVMNetwork(True)
     wallet = Wallet.new_from_private_key(network, private_key)
     print(f"Wallet address: {wallet.address()}")
     print(f"Wallet balance: {await wallet.balance()}")
@@ -166,13 +166,13 @@ Congrats! If you got this far, you are ready to start building apps that can sto
 Registers are mutable data structures that allow you to store updateable content with versioned history. Here's how to use them:
 
 ```python
-from autonomi_client import Client, Network, Wallet, PaymentOption, SecretKey
+from autonomi_client import Client, EVMNetwork, Wallet, PaymentOption, SecretKey
 import asyncio
 
 async def register_example():
     # Initialize client and wallet (same as before)
     private_key = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
-    network = Network(True)
+    network = EVMNetwork(True)
     wallet = Wallet.new_from_private_key(network, private_key)
     client = await Client.init_local()
     payment_option = PaymentOption.wallet(wallet)
