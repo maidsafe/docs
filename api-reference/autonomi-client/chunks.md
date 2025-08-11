@@ -22,8 +22,8 @@ Chunks are native data types in the Autonomi Network:
 
 ### Basic Chunk Operations
 
-#### Rust
-
+{% tabs %}
+{% tab title="Rust" %}
 ```rust
 use autonomi::Client;
 use autonomi::client::payment::PaymentOption;
@@ -64,51 +64,10 @@ async fn main() -> Result<()> {
 }
 ```
 
-#### Node.js
 
-```javascript
-import { Client, Wallet, Network, PaymentOption, ChunkAddress, XorName } from 'autonomi';
+{% endtab %}
 
-async function chunkExample() {
-    // Initialize client and wallet
-    const client = await Client.initLocal();
-    const wallet = Wallet.newFromPrivateKey(
-        new Network(true), 
-        "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
-    );
-
-    // Create chunk data
-    const data = Buffer.from("Hello, world!");
-    console.log(`Creating chunk with size: ${data.length} bytes`);
-
-    // Estimate cost before uploading
-    const estimateAddr = new ChunkAddress(XorName.fromContent(data));
-    const cost = await client.chunkCost(estimateAddr);
-    console.log(`Estimated storage cost: ${cost}`);
-
-    // Upload chunk with payment
-    const paymentOption = PaymentOption.fromWallet(wallet);
-    const result = await client.chunkPut(data, paymentOption);
-    console.log(`Chunk uploaded for: ${result.cost} at address: ${result.addr.toHex()}`);
-
-    // Wait for replication
-    await new Promise(resolve => setTimeout(resolve, 5000));
-
-    // Retrieve and verify the chunk
-    const retrievedData = await client.chunkGet(result.addr);
-    console.log(`Chunk retrieved successfully, data: ${retrievedData.toString()}`);
-    
-    // Verify data integrity
-    if (Buffer.compare(data, retrievedData) === 0) {
-        console.log("Data integrity verified ✓");
-    }
-}
-
-chunkExample().catch(console.error);
-```
-
-#### Python
-
+{% tab title="Python" %}
 ```python
 import asyncio
 from autonomi_client import Client, PaymentOption, Chunk, ChunkAddress
@@ -152,13 +111,58 @@ async def chunk_example():
 if __name__ == "__main__":
     asyncio.run(chunk_example())
 ```
+{% endtab %}
+
+{% tab title="Node.js" %}
+```javascript
+import { Client, Wallet, Network, PaymentOption, ChunkAddress, XorName } from 'autonomi';
+
+async function chunkExample() {
+    // Initialize client and wallet
+    const client = await Client.initLocal();
+    const wallet = Wallet.newFromPrivateKey(
+        new Network(true), 
+        "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
+    );
+
+    // Create chunk data
+    const data = Buffer.from("Hello, world!");
+    console.log(`Creating chunk with size: ${data.length} bytes`);
+
+    // Estimate cost before uploading
+    const estimateAddr = new ChunkAddress(XorName.fromContent(data));
+    const cost = await client.chunkCost(estimateAddr);
+    console.log(`Estimated storage cost: ${cost}`);
+
+    // Upload chunk with payment
+    const paymentOption = PaymentOption.fromWallet(wallet);
+    const result = await client.chunkPut(data, paymentOption);
+    console.log(`Chunk uploaded for: ${result.cost} at address: ${result.addr.toHex()}`);
+
+    // Wait for replication
+    await new Promise(resolve => setTimeout(resolve, 5000));
+
+    // Retrieve and verify the chunk
+    const retrievedData = await client.chunkGet(result.addr);
+    console.log(`Chunk retrieved successfully, data: ${retrievedData.toString()}`);
+    
+    // Verify data integrity
+    if (Buffer.compare(data, retrievedData) === 0) {
+        console.log("Data integrity verified ✓");
+    }
+}
+
+chunkExample().catch(console.error);
+```
+{% endtab %}
+{% endtabs %}
 
 ### Batch Upload Operations
 
 For uploading multiple chunks efficiently:
 
-#### Rust
-
+{% tabs %}
+{% tab title="Rust" %}
 ```rust
 use autonomi::{Client, client::chunk::Chunk};
 use autonomi::client::payment::{PaymentOption, receipt_from_store_quotes};
@@ -210,10 +214,14 @@ async fn batch_chunk_upload() -> Result<()> {
 }
 ```
 
+
+{% endtab %}
+{% endtabs %}
+
 ### Error Handling
 
-#### Rust
-
+{% tabs %}
+{% tab title="Rust" %}
 ```rust
 use autonomi::{Client, client::chunk::Chunk};
 use autonomi::client::{GetError, PutError};
@@ -269,8 +277,12 @@ async fn chunk_error_handling() -> Result<()> {
     Ok(())
 }
 ```
+{% endtab %}
+{% endtabs %}
 
-> Other language support for error handling is in development
+{% hint style="warning" %}
+Support for error handling in languages other than Rust is in development
+{% endhint %}
 
 ### Advanced Configuration
 
@@ -291,9 +303,9 @@ fn configure_performance() {
 
 ## Size Limits and Best Practices
 
-- **Maximum chunk size:** 4MB raw data (`Chunk::MAX_RAW_SIZE`)
-- **Content addressing:** Each chunk's address is the hash of its content
-- **Immutability:** Chunks cannot be modified once stored
-- **Batch operations:** Use `chunk_batch_upload()` for multiple chunks to reduce costs
-- **Caching:** Enable chunk caching for frequently accessed data
-- **Error handling:** Always handle network errors and size limit violations
+* **Maximum chunk size:** 4MB raw data (`Chunk::MAX_RAW_SIZE`)
+* **Content addressing:** Each chunk's address is the hash of its content
+* **Immutability:** Chunks cannot be modified once stored
+* **Batch operations:** Use `chunk_batch_upload()` for multiple chunks to reduce costs
+* **Caching:** Enable chunk caching for frequently accessed data
+* **Error handling:** Always handle network errors and size limit violations
