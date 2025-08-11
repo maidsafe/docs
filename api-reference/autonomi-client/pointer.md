@@ -30,28 +30,54 @@ pub enum PointerTarget {
 
 ## Client Methods
 
-### `pointer_get(address: &PointerAddress) -> Result<Pointer, PointerError>`
+{% code overflow="wrap" %}
+```rust
+pointer_get(address: &PointerAddress) -> Result<Pointer, PointerError>
+```
+{% endcode %}
+
 Retrieves a pointer from the network by its address.
 
-### `pointer_create(owner: &SecretKey, target: PointerTarget, payment_option: PaymentOption) -> Result<(AttoTokens, PointerAddress), PointerError>`
+{% code overflow="wrap" %}
+```rust
+pointer_create(owner: &SecretKey, target: PointerTarget, payment_option: PaymentOption) -> Result<(AttoTokens, PointerAddress), PointerError>
+```
+{% endcode %}
+
 Creates and uploads a new pointer for a payment. Returns the total cost and the pointer's address.
 
 **Note:** Each public key can only have one pointer. If a pointer already exists at the address, this will fail.
 
-### `pointer_update(owner: &SecretKey, target: PointerTarget) -> Result<(), PointerError>`
+{% code overflow="wrap" %}
+```rust
+pointer_update(owner: &SecretKey, target: PointerTarget) -> Result<(), PointerError>
+```
+{% endcode %}
+
 Updates an existing pointer with a new target. This operation is free as the pointer was already paid for at creation.
 
 **Note:** The pointer must exist before it can be updated. Only the latest version (highest counter) is kept on the network.
 
-### `pointer_cost(key: &PublicKey) -> Result<AttoTokens, CostError>`
+```rust
+pointer_cost(key: &PublicKey) -> Result<AttoTokens, CostError>
+```
+
 Estimates the storage cost for creating a pointer.
 
-### `pointer_put(pointer: Pointer, payment_option: PaymentOption) -> Result<(AttoTokens, PointerAddress), PointerError>`
+{% code overflow="wrap" %}
+```rust
+pointer_put(pointer: Pointer, payment_option: PaymentOption) -> Result<(AttoTokens, PointerAddress), PointerError>
+```
+{% endcode %}
+
 Manually uploads a pointer to the network for a payment. Returns the total cost and the pointer's address.
 
 **Warning:** Only use this when you know what you are doing. For most use cases, prefer `pointer_create` and `pointer_update`.
 
-### `pointer_check_existence(address: &PointerAddress) -> Result<bool, PointerError>`
+```
+pointer_check_existence(address: &PointerAddress) -> Result<bool, PointerError>
+```
+
 Checks if a pointer exists on the network. This is much faster than `pointer_get` but may fail if called immediately after creating a pointer.
 
 ## Error Types
@@ -71,11 +97,12 @@ pub enum PointerError {
 }
 ```
 
-## Examples
+## Code Examples
 
 ### Basic Pointer Creation and Update
 
-**Rust Example:**
+{% tabs %}
+{% tab title="Rust" %}
 ```rust
 use autonomi::{Client, SecretKey, PublicKey};
 use autonomi::client::payment::PaymentOption;
@@ -135,8 +162,9 @@ async fn basic_pointer_example() -> Result<()> {
     Ok(())
 }
 ```
+{% endtab %}
 
-**Python Example:**
+{% tab title="Python" %}
 ```python
 from autonomi_client import Client, Network, Wallet, PaymentOption, SecretKey, PointerTarget, ChunkAddress, Pointer
 import asyncio
@@ -185,8 +213,9 @@ async def basic_pointer_example():
     retrieved_data = await client.data_get_public(retrieved_pointer.target.hex)
     print(f"Retrieved target data: {retrieved_data.decode()}")
 ```
+{% endtab %}
 
-**Node.js Example:**
+{% tab title="Node.js" %}
 ```javascript
 import init, * as atnm from '../pkg/autonomi.js';
 
@@ -239,9 +268,14 @@ async function basicPointerExample() {
 }
 ```
 
-### Pointer Update Example
 
-**Rust Example:**
+{% endtab %}
+{% endtabs %}
+
+### Pointer Update
+
+{% tabs %}
+{% tab title="Rust" %}
 ```rust
 async fn pointer_update_example() -> Result<()> {
     let client = Client::init_local().await?;
@@ -283,8 +317,9 @@ async fn pointer_update_example() -> Result<()> {
     Ok(())
 }
 ```
+{% endtab %}
 
-**Python Example:**
+{% tab title="Python" %}
 ```python
 async def pointer_update_example():
     """Example of updating a pointer to point to different data."""
@@ -334,8 +369,9 @@ async def pointer_update_example():
     final_data = await client.data_get_public(final_pointer.target.hex)
     print(f"Final target data: {final_data.decode()}")
 ```
+{% endtab %}
 
-**Node.js Example:**
+{% tab title="Node.js" %}
 ```javascript
 async function pointerUpdateExample() {
     console.log("\n=== Pointer Update Example ===");
@@ -385,10 +421,13 @@ async function pointerUpdateExample() {
     console.log(`Final target data: ${decodedFinalData}`);
 }
 ```
+{% endtab %}
+{% endtabs %}
 
-### Pointer Chain Example
+### Pointer Chain
 
-**Rust Example:**
+{% tabs %}
+{% tab title="Rust" %}
 ```rust
 async fn pointer_chain_example() -> Result<()> {
     let client = Client::init_local().await?;
@@ -432,8 +471,9 @@ async fn pointer_chain_example() -> Result<()> {
     Ok(())
 }
 ```
+{% endtab %}
 
-**Python Example:**
+{% tab title="Python" %}
 ```python
 async def pointer_chain_example():
     """Example of creating a chain of pointers."""
@@ -492,8 +532,9 @@ async def pointer_chain_example():
     chain_result = await client.data_get_public(ptr3.target.hex)
     print(f"Chain result: {chain_result.decode()}")
 ```
+{% endtab %}
 
-**Node.js Example:**
+{% tab title="Node.js" %}
 ```javascript
 async function pointerChainExample() {
     console.log("\n=== Pointer Chain Example ===");
@@ -551,10 +592,13 @@ async function pointerChainExample() {
     console.log(`Chain result: ${decodedChainResult}`);
 }
 ```
+{% endtab %}
+{% endtabs %}
 
-### Error Handling Example
+### Error Handling
 
-**Rust Example:**
+{% tabs %}
+{% tab title="Rust" %}
 ```rust
 async fn error_handling_example() -> Result<()> {
     let client = Client::init_local().await?;
@@ -593,8 +637,9 @@ async fn error_handling_example() -> Result<()> {
     Ok(())
 }
 ```
+{% endtab %}
 
-**Python Example:**
+{% tab title="Python" %}
 ```python
 async def error_handling_example():
     """Example of handling pointer-related errors."""
@@ -630,8 +675,9 @@ async def error_handling_example():
     except Exception as e:
         print(f"Expected error when creating duplicate pointer: {e}")
 ```
+{% endtab %}
 
-**Node.js Example:**
+{% tab title="Node.js" %}
 ```javascript
 async function errorHandlingExample() {
     console.log("\n=== Error Handling Example ===");
@@ -668,6 +714,8 @@ async function errorHandlingExample() {
     }
 }
 ```
+{% endtab %}
+{% endtabs %}
 
 ## Best Practices
 
@@ -680,8 +728,8 @@ async function errorHandlingExample() {
 
 ## Performance Considerations
 
-- **Creation cost:** Initial pointer creation requires payment
-- **Update cost:** Updates are free after creation
-- **Retrieval cost:** Reading pointers is free
-- **Replication delay:** Allow 3-5 seconds for network replication after writes
-- **Existence checks:** Use `pointer_check_existence` for faster existence verification
+* **Creation cost:** Initial pointer creation requires payment
+* **Update cost:** Updates are free after creation
+* **Retrieval cost:** Reading pointers is free
+* **Replication delay:** Allow 3-5 seconds for network replication after writes
+* **Existence checks:** Use `pointer_check_existence` for faster existence verification
