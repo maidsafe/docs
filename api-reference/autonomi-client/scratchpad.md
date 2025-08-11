@@ -10,134 +10,165 @@ Scratchpad is a native data type in the Autonomi Network:
 
 ## Client Methods
 
-### scratchpad_get_from_public_key
+### scratchpad\_get\_from\_public\_key
+
 Retrieves a scratchpad from the network using the owner's public key.
 
 **Input:**
-- `public_key: &PublicKey` - The owner's public key
+
+* `public_key: &PublicKey` - The owner's public key
 
 **Output:**
-- **Rust:** `Result<Scratchpad, ScratchpadError>`
-- **Python:** `Scratchpad` or raises exception
-- **Node.js:** `Promise<Scratchpad>`
 
-### scratchpad_get
+* **Rust:** `Result<Scratchpad, ScratchpadError>`
+* **Python:** `Scratchpad` or raises exception
+* **Node.js:** `Promise<Scratchpad>`
+
+### scratchpad\_get
+
 Retrieves a scratchpad from the network by its address.
 
 **Input:**
-- `address: &ScratchpadAddress` - The scratchpad address
+
+* `address: &ScratchpadAddress` - The scratchpad address
 
 **Output:**
-- **Rust:** `Result<Scratchpad, ScratchpadError>`
-- **Python:** `Scratchpad` or raises exception  
-- **Node.js:** `Promise<Scratchpad>`
 
-### scratchpad_check_existence
+* **Rust:** `Result<Scratchpad, ScratchpadError>`
+* **Python:** `Scratchpad` or raises exception
+* **Node.js:** `Promise<Scratchpad>`
+
+### scratchpad\_check\_existence
+
 Checks if a scratchpad exists on the network. Much faster than `scratchpad_get`.
 
 **Input:**
-- `address: &ScratchpadAddress` - The scratchpad address
+
+* `address: &ScratchpadAddress` - The scratchpad address
 
 **Output:**
-- **Rust:** `Result<bool, ScratchpadError>`
-- **Python:** `bool` or raises exception
-- **Node.js:** `Promise<boolean>`
 
-### scratchpad_verify
+* **Rust:** `Result<bool, ScratchpadError>`
+* **Python:** `bool` or raises exception
+* **Node.js:** `Promise<boolean>`
+
+### scratchpad\_verify
+
 Verifies a scratchpad's signature and size constraints.
 
 **Input:**
-- `scratchpad: &Scratchpad` - The scratchpad to verify
+
+* `scratchpad: &Scratchpad` - The scratchpad to verify
 
 **Output:**
-- **Rust:** `Result<(), ScratchpadError>`
-- **Python:** `None` or raises exception
-- **Node.js:** `void` (throws on error)
 
-### scratchpad_put
+* **Rust:** `Result<(), ScratchpadError>`
+* **Python:** `None` or raises exception
+* **Node.js:** `void` (throws on error)
+
+### scratchpad\_put
+
 Manually uploads a scratchpad to the network. Requires the scratchpad to be already created and signed.
 
 **Input:**
-- `scratchpad: Scratchpad` - The scratchpad to store
-- `payment_option: PaymentOption` - Payment method
+
+* `scratchpad: Scratchpad` - The scratchpad to store
+* `payment_option: PaymentOption` - Payment method
 
 **Output:**
-- **Rust:** `Result<(AttoTokens, ScratchpadAddress), ScratchpadError>`
-- **Python:** `tuple[str, ScratchpadAddress]` (cost as string) or raises exception
-- **Node.js:** `Promise<ScratchpadPut>` with `cost: string` and `addr: ScratchpadAddress`
 
-### scratchpad_create
+* **Rust:** `Result<(AttoTokens, ScratchpadAddress), ScratchpadError>`
+* **Python:** `tuple[str, ScratchpadAddress]` (cost as string) or raises exception
+* **Node.js:** `Promise<ScratchpadPut>` with `cost: string` and `addr: ScratchpadAddress`
+
+### scratchpad\_create
+
 Creates and uploads a new scratchpad to the network. Encrypts the content automatically.
 
 **Input:**
-- `owner: &SecretKey` - The owner's secret key
-- `content_type: u64` - Application-specific content type identifier
-- `initial_data: &Bytes` - The initial data to store
-- `payment_option: PaymentOption` - Payment method
+
+* `owner: &SecretKey` - The owner's secret key
+* `content_type: u64` - Application-specific content type identifier
+* `initial_data: &Bytes` - The initial data to store
+* `payment_option: PaymentOption` - Payment method
 
 **Output:**
-- **Rust:** `Result<(AttoTokens, ScratchpadAddress), ScratchpadError>`
-- **Python:** `tuple[str, ScratchpadAddress]` (cost as string) or raises exception
-- **Node.js:** `Promise<ScratchpadPut>` with `cost: string` and `addr: ScratchpadAddress`
 
-### scratchpad_update
+* **Rust:** `Result<(AttoTokens, ScratchpadAddress), ScratchpadError>`
+* **Python:** `tuple[str, ScratchpadAddress]` (cost as string) or raises exception
+* **Node.js:** `Promise<ScratchpadPut>` with `cost: string` and `addr: ScratchpadAddress`
+
+### scratchpad\_update
+
 Updates an existing scratchpad with new content. This operation is free.
 
 **Input:**
-- `owner: &SecretKey` - The owner's secret key
-- `content_type: u64` - Content type identifier
-- `data: &Bytes` - The new data to store
+
+* `owner: &SecretKey` - The owner's secret key
+* `content_type: u64` - Content type identifier
+* `data: &Bytes` - The new data to store
 
 **Output:**
-- **Rust:** `Result<(), ScratchpadError>`
-- **Python:** `None` or raises exception
-- **Node.js:** `Promise<void>`
 
-### scratchpad_update_from
+* **Rust:** `Result<(), ScratchpadError>`
+* **Python:** `None` or raises exception
+* **Node.js:** `Promise<void>`
+
+### scratchpad\_update\_from
+
 Updates an existing scratchpad from a specific scratchpad instance. Used internally by `scratchpad_update`.
 
 **Input:**
-- `current: &Scratchpad` - The current scratchpad
-- `owner: &SecretKey` - The owner's secret key
-- `content_type: u64` - Content type identifier
-- `data: &Bytes` - The new data to store
+
+* `current: &Scratchpad` - The current scratchpad
+* `owner: &SecretKey` - The owner's secret key
+* `content_type: u64` - Content type identifier
+* `data: &Bytes` - The new data to store
 
 **Output:**
-- **Rust:** `Result<Scratchpad, ScratchpadError>`
-- **Python:** `Scratchpad` or raises exception
-- **Node.js:** Not directly exposed
 
-### scratchpad_cost
+* **Rust:** `Result<Scratchpad, ScratchpadError>`
+* **Python:** `Scratchpad` or raises exception
+* **Node.js:** Not directly exposed
+
+### scratchpad\_cost
+
 Estimates the storage cost for a new scratchpad.
 
 **Input:**
-- `owner: &PublicKey` - The owner's public key
+
+* `owner: &PublicKey` - The owner's public key
 
 **Output:**
-- **Rust:** `Result<AttoTokens, CostError>`
-- **Python:** `str` (cost as string) or raises exception
-- **Node.js:** `Promise<string>`
+
+* **Rust:** `Result<AttoTokens, CostError>`
+* **Python:** `str` (cost as string) or raises exception
+* **Node.js:** `Promise<string>`
 
 ## Language-Specific Type Differences
 
 ### Error Handling
-- **Rust:** Uses `Result<T, ScratchpadError>` with detailed error variants
-- **Python:** Raises exceptions with simplified error messages as strings
-- **Node.js:** Uses Promise rejection with Error objects containing simplified messages
+
+* **Rust:** Uses `Result<T, ScratchpadError>` with detailed error variants
+* **Python:** Raises exceptions with simplified error messages as strings
+* **Node.js:** Uses Promise rejection with Error objects containing simplified messages
 
 ### Numeric Types
-- **Rust:** Uses `u64` for content_type, `AttoTokens` for costs
-- **Python:** Uses `int` for content_type, `str` for costs
-- **Node.js:** Uses `bigint` for content_type, `string` for costs
+
+* **Rust:** Uses `u64` for content\_type, `AttoTokens` for costs
+* **Python:** Uses `int` for content\_type, `str` for costs
+* **Node.js:** Uses `bigint` for content\_type, `string` for costs
 
 ### Data Types
-- **Rust:** Uses `Bytes` type for data
-- **Python:** Uses `bytes` for data
-- **Node.js:** Uses `Buffer` for data
+
+* **Rust:** Uses `Bytes` type for data
+* **Python:** Uses `bytes` for data
+* **Node.js:** Uses `Buffer` for data
 
 ## Examples
 
-### Rust
+{% tabs %}
+{% tab title="Rust" %}
 ```rust
 use autonomi::{Client, SecretKey, AttoTokens, Bytes};
 use autonomi::client::payment::PaymentOption;
@@ -185,8 +216,9 @@ async fn scratchpad_example() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 ```
+{% endtab %}
 
-### Python
+{% tab title="Python" %}
 ```python
 import asyncio
 from autonomi_client import Client, SecretKey, Wallet, PaymentOption, Network
@@ -235,10 +267,11 @@ async def scratchpad_example():
     except Exception as e:
         print(f"Error: {e}")
 
-asyncio.run(scratchpad_example())
+asyncio.run(scratchpad_example()) 
 ```
+{% endtab %}
 
-### Node.js
+{% tab title="Node.js" %}
 ```javascript
 import { Client, SecretKey, Wallet, Network, PaymentOption } from '@withautonomi/autonomi';
 
@@ -292,23 +325,32 @@ async function scratchpadExample() {
 
 scratchpadExample();
 ```
+{% endtab %}
+{% endtabs %}
 
 ## Error Handling
 
+{% tabs %}
+{% tab title="Rust" %}
 ### Rust Errors
-The `ScratchpadError` enum provides detailed error variants:
-- `PutError` - Failed to store scratchpad
-- `Pay` - Payment failure
-- `GetError` - Failed to retrieve scratchpad
-- `Corrupt` - Invalid scratchpad data
-- `Serialization` - Serialization error
-- `ScratchpadAlreadyExists` - Scratchpad already exists at address
-- `CannotUpdateNewScratchpad` - Cannot update non-existent scratchpad
-- `ScratchpadTooBig` - Exceeds maximum size (4MB)
-- `BadSignature` - Invalid signature
-- `Fork` - Multiple conflicting versions detected
 
+The `ScratchpadError` enum provides detailed error variants:
+
+* `PutError` - Failed to store scratchpad
+* `Pay` - Payment failure
+* `GetError` - Failed to retrieve scratchpad
+* `Corrupt` - Invalid scratchpad data
+* `Serialization` - Serialization error
+* `ScratchpadAlreadyExists` - Scratchpad already exists at address
+* `CannotUpdateNewScratchpad` - Cannot update non-existent scratchpad
+* `ScratchpadTooBig` - Exceeds maximum size (4MB)
+* `BadSignature` - Invalid signature
+* `Fork` - Multiple conflicting versions detected
+{% endtab %}
+
+{% tab title="Python" %}
 ### Python Error Handling
+
 ```python
 try:
     scratchpad = await client.scratchpad_get(addr)
@@ -320,8 +362,11 @@ except Exception as e:
     else:
         print(f"Unexpected error: {e}")
 ```
+{% endtab %}
 
+{% tab title="Node.js" %}
 ### Node.js Error Handling
+
 ```javascript
 try {
     const scratchpad = await client.scratchpadGet(addr);
@@ -335,6 +380,9 @@ try {
     }
 }
 ```
+{% endtab %}
+{% endtabs %}
 
-**Note:** Due to compatibility isues, Python and Node.js bindings simplify types (and error types to string messages within exceptions/rejections).
-For full experience and control it's recommended to use Rust.
+{% hint style="warning" %}
+Due to compatibility issues, Python and Node.js bindings simplify types (and error types to string messages within exceptions/rejections). For full experience and control it's recommended to use Rust.
+{% endhint %}
