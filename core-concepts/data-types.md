@@ -173,9 +173,13 @@ Regular data storage allows storing arbitrary-length data securely on the Autono
 
 More on Regular Data Storage in the [Data API Reference](../api-reference/autonomi-client/data.md)
 
-### Files
+### Public Archive
 
-Files are built on top of regular data storage, allowing users to store entire files or directories as immutable archives. They support deeply nested paths and associated metadata, enabling structured file organization. Like regular data storage, files are immutable and permanent, requiring a one-time payment for upload, after which they remain unchanged forever.
+A Public Archive is a structure that maps file paths to data addresses on the network. While it can be used to store a single file with its metadata, it is generally used to organize multiple files in a hierarchical structure to simulate directories. Public Archives support nested paths and store metadata (creation time, modification time, size) for each file. Public Archives are stored on the network as Chunks.
+
+### Private Archive
+
+A Private Archive provides enhanced privacy by storing data locally rather than on the network. Unlike Public Archives which reference files through their network addresses, Private Archives contain the complete data maps within the archive itself. Like Public Archives, they support nested paths to simulate directories and store metadata for each file, but all this information stays local to the owner.
 
 ### Register
 
