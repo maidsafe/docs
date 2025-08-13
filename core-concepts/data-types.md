@@ -167,12 +167,6 @@ More on GraphEntries in the [GraphEntry API Reference](../api-reference/autonomi
 
 The API provides high-level data APIs and types that offer a more intuitive and accessible abstraction over the native data types. These higher-level constructs simplify usage while leveraging the native data types as their foundation. Below is a description of these data types.
 
-### Regular Data Storage
-
-Regular data storage allows storing arbitrary-length data securely on the Autonomi Network. It uses self-encryption, a strong encryption mechanism that ensures data is fragmented into encrypted Chunks and distributed across the network. This storage supports both public data (accessible to anyone) and private data (restricted to the owner). It provides immutable, permanent storage, where data remains unchanged once uploaded. Users pay once for the upload, and the data is preserved forever.
-
-More on Regular Data Storage in the [Data API Reference](../api-reference/autonomi-client/data.md)
-
 ### Public Archive
 
 A Public Archive is a structure that maps file paths to data addresses on the network. While it can be used to store a single file with its metadata, it is generally used to organize multiple files in a hierarchical structure to simulate directories. Public Archives support nested paths and store metadata (creation time, modification time, size) for each file. Public Archives are stored on the network as Chunks.
