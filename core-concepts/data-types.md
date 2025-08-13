@@ -171,16 +171,45 @@ The API provides high-level data APIs and types that offer a more intuitive and 
 
 A Public Archive is a structure that maps file paths to data addresses on the network. While it can be used to store a single file with its metadata, it is generally used to organize multiple files in a hierarchical structure to simulate directories. Public Archives support nested paths and store metadata (creation time, modification time, size) for each file. Public Archives are stored on the network as Chunks.
 
+**How it works:**
+- The archive itself is stored on the network as **Chunks** using self-encryption
+- Each file in the archive has its data stored as **Chunks** (already uploaded)
+- The archive maintains a `BTreeMap<PathBuf, (DataAddress, Metadata)>` structure that maps file paths to chunk addresses
+- When uploaded, the entire archive structure is serialized and chunked, creating an immutable snapshot of the file collection
+
 ### Private Archive
 
-A Private Archive provides enhanced privacy by storing data locally rather than on the network. Unlike Public Archives which reference files through their network addresses, Private Archives contain the complete data maps within the archive itself. Like Public Archives, they support nested paths to simulate directories and store metadata for each file, but all this information stays local to the owner.
+A Private Archive provides enhanced privacy by keeping data maps within the archive itself rather than referencing them on the network. Unlike Public Archives which reference files through their network addresses, Private Archives contain the complete data maps within the archive structure. Like Public Archives, they support nested paths to simulate directories and store metadata for each file. Private Archives are uploaded to the network as encrypted chunks.
+
+**How it works:**
+- The archive itself is stored on the network as encrypted **Chunks**
+- Unlike public archives, the data maps are stored within the archive structure itself rather than just addresses
+- The archive maintains a `BTreeMap<PathBuf, (DataMapChunk, Metadata)>` where `DataMapChunk` contains the actual data map
+- The entire archive is encrypted before being chunked and uploaded to the network
+- File data must still be uploaded as **Chunks**, but the data maps remain private within the archive
 
 ### Register
 
 A Register is a 32-byte mutable memory register that allows storing and updating small pieces of data. Unlike immutable storage, Registers support updates, but each modification requires a payment. The entire update history is preserved, enabling users to traverse past versions when needed.
+
+**How it works:**
+- Registers use **GraphEntries** and **Pointers** under the hood for mutable 32-byte storage
+- Each register entry is stored as a **GraphEntry** which maintains immutable data and links to parent entries
+- **Pointers** provide the mutable reference mechanism, allowing updates to point to new GraphEntry versions
+- The register maintains a version history through the GraphEntry parent-child relationships
+- Updates create new GraphEntries and update the Pointer to reference the latest version
 
 More on Registers in the [Register API Reference](../api-reference/autonomi-client/register.md)
 
 ### Vault
 
 A Vault is a secure, encrypted storage system that helps users manage their data on the Autonomi Network. It allows storing owned Registers, Register keys, and references to file archives (both public and private). Users pay once for a fixed storage size and can update their Vault unlimited times for free. If more space is needed, Vault size can be upgraded at any time with an additional payment. With a Vault, users only need to retain a single key to access all their stored data on the network, simplifying data management and security.
+
+**How it works:**
+- Vaults use **GraphEntries** and **Scratchpads** to create a dynamic storage system
+- The vault structure is a linked list of **GraphEntries**, where the first descendant points to the next GraphEntry and remaining descendants point to **Scratchpads**
+- Each **GraphEntry** can have up to 1,000 descendants, with one pointing to the next GraphEntry and others referencing Scratchpads for data storage
+- Each **Scratchpad** stores up to ~4MB of encrypted vault data with version counters
+- When more storage is needed, new GraphEntries are created and linked, with new Scratchpads claimed for data storage
+- All vault data is encrypted using BLS key derivation before being stored in Scratchpads
+- The vault root GraphEntry is derived from a user's secret key using a hardcoded derivation index
