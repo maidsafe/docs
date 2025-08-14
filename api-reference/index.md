@@ -6,6 +6,7 @@ Autonomi provides several APIs for different aspects of the system:
 
 The [Autonomi Client API](autonomi-client/) is the core library for interacting with the Autonomi network. It provides:
 
+* [Data Storage And Retrieval](autonomi-client/data.md)
 * [Chunk Operations](autonomi-client/chunks.md)
 * [Pointer Management](autonomi-client/pointer.md)
 * [Graph Operations](autonomi-client/graphentry.md)

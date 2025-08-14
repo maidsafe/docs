@@ -25,6 +25,7 @@
 
 * [API Reference Overview](api-reference/index.md)
 * [Client API](api-reference/autonomi-client/README.md)
+  * [Data](api-reference/autonomi-client/data.md)
   * [Chunks](api-reference/autonomi-client/chunks.md)
   * [Pointer](api-reference/autonomi-client/pointer.md)
   * [Scratchpad](api-reference/autonomi-client/scratchpad.md)
