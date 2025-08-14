@@ -46,6 +46,8 @@ A Public Archive is a structure that maps file paths to data addresses on the ne
 
 Think of a Public Archive as a directory listing that lives on the network. When you create one, each file gets uploaded as chunks first, then the archive creates a map linking file paths to where those chunks live on the network. The archive itself becomes a chunk too—it's like taking a photo of your file system structure and storing that photo on the network. Once uploaded, this snapshot is permanent and immutable, but it provides a convenient way to organize and reference collections of files as a single unit.
 
+More on Public Archives in the [Public Archive API Reference](../api-reference/autonomi-client/public-archive.md)
+
 ### Private Archive
 
 A Private Archive provides enhanced privacy by keeping data maps within the archive itself rather than referencing them on the network. Unlike Public Archives which reference files through their network addresses, Private Archives contain the complete data maps within the archive structure. Like Public Archives, they support nested paths to simulate directories and store metadata for each file. Private Archives are uploaded to the network as encrypted chunks.
@@ -53,6 +55,8 @@ A Private Archive provides enhanced privacy by keeping data maps within the arch
 **How it works:**
 
 A Private Archive takes a different approach to privacy than its public counterpart. Instead of just storing references to where files live on the network, it actually embeds the complete data maps for each file within the archive itself. This means the archive becomes more like a self-contained package—you still upload your files as chunks first, but then the archive stores the detailed instructions for reassembling those chunks internally rather than just pointing to them. The entire archive gets encrypted before being stored as chunks, ensuring that even the file organization and metadata remain private. This gives you both the convenience of organized file collections and enhanced privacy protection.
+
+More on Private Archives in the [Private Archive API Reference](../api-reference/autonomi-client/private-archive.md)
 
 ### Register
 
@@ -75,3 +79,5 @@ A Vault is like a sophisticated filing cabinet that grows as you need more space
 The clever part is how vaults repurpose GraphEntry descendants—instead of linking to other GraphEntries (which is their typical use), vault descendants point directly to Scratchpads for data storage, making the vault structure both efficient and expandable.
 
 Your vault's location is mathematically derived from your secret key, so you always know where to find it. All your data gets encrypted before being stored in the Scratchpads, ensuring privacy. The beauty is that once you've paid for your initial vault space, you can reorganize and update your data as much as you want—only expanding to new compartments requires additional payment. It's designed so that with just one secret key, you can access and manage all your data scattered across the network.
+
+More on Vaults in the [Vault API Reference](../api-reference/autonomi-client/vault.md)
