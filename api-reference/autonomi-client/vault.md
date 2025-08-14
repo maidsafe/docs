@@ -1,7 +1,6 @@
-# Vaults
+# Vault
 
-Vaults are a scalable, encrypted storage space on the Autonomi Network designed for secure management of diverse data types. They serve as a dedicated repository for storing the DataMaps of private data uploads, as well as keys and other personal information—whether network-related or not. Essentially, a Vault acts as your personal account, maintaining references to all data you have stored on the Network.
-Vaults are a high level data type in the Autonomi Network. Which means they are a client side construct built on top of the lower level native data types.
+Vaults are a scalable, encrypted storage space on the Autonomi Network designed for secure management of diverse data types. They serve as a dedicated repository for storing the DataMaps of private data uploads, as well as keys and other personal information—whether network-related or not. Essentially, a Vault acts as your personal account, maintaining references to all data you have stored on the Network. Vaults are a high level data type in the Autonomi Network. Which means they are a client side construct built on top of the lower level native data types.
 
 * **key-addressed:** Network address is derived from a BLS public key
 * **Scalable:** Size grows as you add more data
@@ -11,11 +10,11 @@ Vaults are a high level data type in the Autonomi Network. Which means they are 
 
 ### Client Methods
 
-* **fetch\_and\_decrypt\_vault**  
+* **fetch\_and\_decrypt\_vault**\
   Retrieves and returns a decrypted vault if one exists. Returns the decrypted bytes along with the vault content type.
-* **write\_bytes\_to\_vault**  
+* **write\_bytes\_to\_vault**\
   Puts data into the client's Vault, dynamically expanding the vault capacity by paying for additional space when needed. If the Vault does not exist, it will be created.
-* **vault\_cost**  
+* **vault\_cost**\
   Estimates the cost of creating a new vault. The cost is computed based on the desired initial size of the vault.
 
 ### Example

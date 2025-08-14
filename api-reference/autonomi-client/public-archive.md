@@ -1,6 +1,6 @@
 # Public Archive
 
-A Public Archive is a structure that maps file paths to data addresses on the network. While it can be used to store a single file with its metadata, it is generally used to organize multiple files in a hierarchical structure to simulate directories. Public Archives support nested paths and store metadata (creation time, modification time, size) for each file. 
+A Public Archive is a structure that maps file paths to data addresses on the network. While it can be used to store a single file with its metadata, it is generally used to organize multiple files in a hierarchical structure to simulate directories. Public Archives support nested paths and store metadata (creation time, modification time, size) for each file.
 
 The key feature of Public Archives is that they store references (addresses) to files already uploaded to the network. When you retrieve a Public Archive, you get the addresses of the files, which you can then use to download the actual file content. The archive itself is uploaded to the network as chunks, and can be retrieved using its address.
 
@@ -16,6 +16,7 @@ pub struct PublicArchive {
 ## Instance Methods
 
 ### `new() -> Self`
+
 Create a new empty Public Archive.
 
 ```rust
@@ -23,6 +24,7 @@ let archive = PublicArchive::new();
 ```
 
 ### `add_file(&mut self, path: PathBuf, data_addr: DataAddress, meta: Metadata)`
+
 Add a file to the archive with its network address and metadata.
 
 ```rust
@@ -34,6 +36,7 @@ archive.add_file(
 ```
 
 ### `rename_file(&mut self, old_path: &Path, new_path: &Path) -> Result<(), RenameError>`
+
 Rename a file within the archive. This only changes the path in the archive structure, not the actual data on the network.
 
 ```rust
@@ -44,6 +47,7 @@ archive.rename_file(
 ```
 
 ### `files(&self) -> Vec<(PathBuf, Metadata)>`
+
 Get a list of all files in the archive with their metadata.
 
 ```rust
@@ -54,6 +58,7 @@ for (path, metadata) in file_list {
 ```
 
 ### `addresses(&self) -> Vec<DataAddress>`
+
 Get all data addresses stored in the archive.
 
 ```rust
@@ -61,6 +66,7 @@ let addresses = archive.addresses();
 ```
 
 ### `iter(&self) -> impl Iterator<Item = (&PathBuf, &DataAddress, &Metadata)>`
+
 Iterate over all items in the archive.
 
 ```rust
@@ -70,6 +76,7 @@ for (path, addr, metadata) in archive.iter() {
 ```
 
 ### `map(&self) -> &BTreeMap<PathBuf, (DataAddress, Metadata)>`
+
 Get direct access to the underlying map structure.
 
 ```rust
@@ -77,6 +84,7 @@ let map = archive.map();
 ```
 
 ### `merge(&mut self, other: &PublicArchive)`
+
 Merge another archive into this one. Files from the other archive will be added to this archive.
 
 ```rust
@@ -84,6 +92,7 @@ archive.merge(&other_archive);
 ```
 
 ### `to_bytes(&self) -> Result<Bytes, rmp_serde::encode::Error>`
+
 Serialize the archive to bytes for storage.
 
 ```rust
@@ -91,6 +100,7 @@ let bytes = archive.to_bytes()?;
 ```
 
 ### `from_bytes(data: Bytes) -> Result<PublicArchive, rmp_serde::decode::Error>`
+
 Deserialize an archive from bytes.
 
 ```rust
@@ -100,6 +110,7 @@ let archive = PublicArchive::from_bytes(bytes)?;
 ## Client Methods
 
 ### `archive_put_public(&self, archive: &PublicArchive, payment_option: PaymentOption) -> Result<(AttoTokens, ArchiveAddress), PutError>`
+
 Upload a Public Archive to the network. Returns the cost and the address where the archive can be retrieved.
 
 ```rust
@@ -109,6 +120,7 @@ let (cost, archive_address) = client
 ```
 
 ### `archive_get_public(&self, addr: &ArchiveAddress) -> Result<PublicArchive, GetError>`
+
 Retrieve a Public Archive from the network using its address.
 
 ```rust
@@ -116,6 +128,7 @@ let archive = client.archive_get_public(&archive_address).await?;
 ```
 
 ### `archive_cost(&self, archive: &PublicArchive) -> Result<AttoTokens, CostError>`
+
 Calculate the cost to upload an archive without actually uploading it.
 
 ```rust
@@ -300,6 +313,6 @@ publicArchiveExample().catch(console.error)
 
 ## See Also
 
-- [Files API](./files.md) - High-level file upload/download operations
-- [Advanced Files Management](./files-advanced.md) - Advanced archive manipulation
-- [Private Archive API Reference](./private-archive.md) - Private archive operations
+* Files API - High-level file upload/download operations
+* Advanced Files Management - Advanced archive manipulation
+* Private Archive API Reference - Private archive operations

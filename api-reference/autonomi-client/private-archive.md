@@ -16,6 +16,7 @@ pub struct PrivateArchive {
 ## Instance Methods
 
 ### `new() -> Self`
+
 Create a new empty Private Archive.
 
 ```rust
@@ -23,6 +24,7 @@ let archive = PrivateArchive::new();
 ```
 
 ### `add_file(&mut self, path: PathBuf, data_map: DataMapChunk, meta: Metadata)`
+
 Add a file to the archive with its data map and metadata.
 
 ```rust
@@ -34,6 +36,7 @@ archive.add_file(
 ```
 
 ### `rename_file(&mut self, old_path: &Path, new_path: &Path) -> Result<(), RenameError>`
+
 Rename a file within the archive. This only changes the path in the archive structure.
 
 ```rust
@@ -44,6 +47,7 @@ archive.rename_file(
 ```
 
 ### `files(&self) -> Vec<(PathBuf, Metadata)>`
+
 Get a list of all files in the archive with their metadata.
 
 ```rust
@@ -54,6 +58,7 @@ for (path, metadata) in file_list {
 ```
 
 ### `data_maps(&self) -> Vec<DataMapChunk>`
+
 Get all data map chunks stored in the archive.
 
 ```rust
@@ -61,6 +66,7 @@ let data_maps = archive.data_maps();
 ```
 
 ### `iter(&self) -> impl Iterator<Item = (&PathBuf, &DataMapChunk, &Metadata)>`
+
 Iterate over all items in the archive.
 
 ```rust
@@ -70,6 +76,7 @@ for (path, data_map, metadata) in archive.iter() {
 ```
 
 ### `map(&self) -> &BTreeMap<PathBuf, (DataMapChunk, Metadata)>`
+
 Get direct access to the underlying map structure.
 
 ```rust
@@ -77,6 +84,7 @@ let map = archive.map();
 ```
 
 ### `merge(&mut self, other: &PrivateArchive)`
+
 Merge another archive into this one. Files from the other archive will be added to this archive.
 
 ```rust
@@ -84,6 +92,7 @@ archive.merge(&other_archive);
 ```
 
 ### `to_bytes(&self) -> Result<Bytes, rmp_serde::encode::Error>`
+
 Serialize the archive to bytes for storage.
 
 ```rust
@@ -91,6 +100,7 @@ let bytes = archive.to_bytes()?;
 ```
 
 ### `from_bytes(data: Bytes) -> Result<PrivateArchive, rmp_serde::decode::Error>`
+
 Deserialize an archive from bytes.
 
 ```rust
@@ -100,6 +110,7 @@ let archive = PrivateArchive::from_bytes(bytes)?;
 ## Client Methods
 
 ### `archive_put(&self, archive: &PrivateArchive, payment_option: PaymentOption) -> Result<(AttoTokens, PrivateArchiveDataMap), PutError>`
+
 Upload a Private Archive to the network. Returns the cost and the data map needed to retrieve the archive. This data map should be kept private.
 
 ```rust
@@ -109,6 +120,7 @@ let (cost, archive_data_map) = client
 ```
 
 ### `archive_get(&self, addr: &PrivateArchiveDataMap) -> Result<PrivateArchive, GetError>`
+
 Retrieve a Private Archive from the network using its data map.
 
 ```rust
@@ -303,13 +315,13 @@ privateArchiveExample().catch(console.error)
 
 ## Privacy Considerations
 
-- The `PrivateArchiveDataMap` returned from `archive_put` must be kept secret - anyone with this data map can retrieve and decrypt the archive
-- Unlike Public Archives, the data maps are embedded within the archive, making the file structure itself private
-- Consider storing the archive data map in a [Vault](./vault.md) for secure long-term storage
+* The `PrivateArchiveDataMap` returned from `archive_put` must be kept secret - anyone with this data map can retrieve and decrypt the archive
+* Unlike Public Archives, the data maps are embedded within the archive, making the file structure itself private
+* Consider storing the archive data map in a Vault for secure long-term storage
 
 ## See Also
 
-- [Files API](./files.md) - High-level file upload/download operations
-- [Advanced Files Management](./files-advanced.md) - Advanced archive manipulation
-- [Public Archive API Reference](./public-archive.md) - Public archive operations
-- [Vault API Reference](./vault.md) - Secure storage for private data maps
+* Files API - High-level file upload/download operations
+* Advanced Files Management - Advanced archive manipulation
+* Public Archive API Reference - Public archive operations
+* Vault API Reference - Secure storage for private data maps
