@@ -24,7 +24,7 @@ Registers are a high level data type in the Autonomi Network. Which means they a
 #### API helpers for registers:
 
 * **register\_key\_from\_name**\
-  Creates a new BLS key deriving it from a name and a base key. This is used to be able to create multiple registers with the same key (and different names). cf [bls key derivation](bls_keys.md)
+  Creates a new BLS key deriving it from a name and a base key. This is used to be able to create multiple registers with the same key (and different names). cf [bls key derivation](bls-keys.md)
 * **register\_value\_from\_bytes** Makes sure the content fits in 32 bytes.
 
 ## Examples

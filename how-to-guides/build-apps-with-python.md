@@ -2,10 +2,10 @@
 
 This guide will help you get started with building apps with Autonomi starting from scratch. This guide has 4 parts:
 
-1. [Prerequisites](build_apps_with_python.md#prerequisites)
-2. [Create a local testnet](build_apps_with_python.md#create-a-local-testnet)
-3. [Connect to the testnet with Python](build_apps_with_python.md#connect-to-the-testnet-with-python)
-4. [Upload and retrieve data with Python](build_apps_with_python.md#upload-and-retrieve-data-with-python)
+1. [Prerequisites](build-apps-with-python.md#prerequisites)
+2. [Create a local testnet](build-apps-with-python.md#create-a-local-testnet)
+3. [Connect to the testnet with Python](build-apps-with-python.md#connect-to-the-testnet-with-python)
+4. [Upload and retrieve data with Python](build-apps-with-python.md#upload-and-retrieve-data-with-python)
 
 {% hint style="info" %}
 This has guide has been tested on MacOS, it should work on Linux or other unixes as well, but the commands might be slightly different for Windows (unless you are using [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)).
@@ -277,5 +277,5 @@ rm -rf $HOME/.local/share/autonomi/; cargo run --bin evm-testnet& cargo run --bi
 ```
 
 {% hint style="info" %}
-Note: this has to be run in the autonomi directory (the one we cloned in [part 1](build_apps_with_python.md#create-a-local-testnet))
+Note: this has to be run in the autonomi directory (the one we cloned in [part 1](build-apps-with-python.md#create-a-local-testnet))
 {% endhint %}

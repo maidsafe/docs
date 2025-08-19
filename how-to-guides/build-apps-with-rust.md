@@ -2,10 +2,10 @@
 
 This guide will help you get started with Autonomi starting from scratch. This guide has 4 parts:
 
-1. [Prerequisites](build_apps_with_rust.md#prerequisites)
-2. [Create a local testnet](build_apps_with_rust.md#create-a-local-testnet)
-3. [Connect to the testnet with Rust](build_apps_with_rust.md#connect-to-the-testnet-with-rust)
-4. [Upload and retrieve data with Rust](build_apps_with_rust.md#upload-and-retrieve-data-with-rust)
+1. [Prerequisites](build-apps-with-rust.md#prerequisites)
+2. [Create a local testnet](build-apps-with-rust.md#create-a-local-testnet)
+3. [Connect to the testnet with Rust](build-apps-with-rust.md#connect-to-the-testnet-with-rust)
+4. [Upload and retrieve data with Rust](build-apps-with-rust.md#upload-and-retrieve-data-with-rust)
 
 > This has guide has been tested on MacOS, it should work on Linux or other unixes as well, but the commands might be slightly different for Windows (unless you are using [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)).
 
@@ -203,4 +203,4 @@ rm -rf $HOME/Library/Application\ Support/autonomi/; cargo run --bin evm-testnet
 rm -rf $HOME/.local/share/autonomi/; cargo run --bin evm-testnet& cargo run --bin antctl -- local run --build --rewards-address=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266; (trap 'killall evm-testnet anvil antnode' SIGINT; cat)
 ```
 
-This has to be run in the autonomi directory (the one we cloned in [part 1](build_apps_with_rust.md#create-a-local-testnet)).
+This has to be run in the autonomi directory (the one we cloned in [part 1](build-apps-with-rust.md#create-a-local-testnet)).

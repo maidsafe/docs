@@ -2,10 +2,10 @@
 
 This guide will help you get started with building apps with Autonomi starting from scratch. This guide has 4 parts:
 
-1. [Prerequisites](build_apps_with_nodejs.md#prerequisites)
-2. [Create a local testnet](build_apps_with_nodejs.md#create-a-local-testnet)
-3. [Connect to the testnet with Node.js](build_apps_with_nodejs.md#connect-to-the-testnet-with-nodejs)
-4. [Upload and retrieve data with Node.js](build_apps_with_nodejs.md#upload-and-retrieve-data-with-nodejs)
+1. [Prerequisites](build-apps-with-nodejs.md#prerequisites)
+2. [Create a local testnet](build-apps-with-nodejs.md#create-a-local-testnet)
+3. [Connect to the testnet with Node.js](build-apps-with-nodejs.md#connect-to-the-testnet-with-nodejs)
+4. [Upload and retrieve data with Node.js](build-apps-with-nodejs.md#upload-and-retrieve-data-with-nodejs)
 
 {% hint style="info" %}
 This has guide has been tested on MacOS and Linux, but the commands might be slightly different for Windows (unless you are using [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)).
