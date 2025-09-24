@@ -301,11 +301,54 @@ fn configure_performance() {
 }
 ```
 
+## Streaming Data
+
+The `data_stream_public` method returns an iterator that yields chunks of data as they arrive from the network:
+
+#### Rust
+
+```rust
+use autonomi::{Client, data::DataAddress};
+use std::fs::File;
+use std::io::Write;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = Client::init().await?;
+
+    // Example: download a large video file
+    let address = DataAddress::from_hex("bfbe41a1fffdcd0b40e8bc569e3f24f0dd7646a9d2883515ccca92c0623291ae")?;
+
+    // Create output file
+    println!("Creating empty file video.mp4");
+    let mut file = File::create("video.mp4")?;
+
+    // Stream chunks and write to file
+    let data_stream = client.data_stream_public(&address).await?;
+
+    let total_size = data_stream.data_size();
+    println!("Data size: {} bytes", total_size);
+
+    println!("Begin streaming...");
+    let mut chunk_count = 0;
+    for chunk_result in data_stream {
+        let chunk = chunk_result?;
+        chunk_count += 1;
+        println!("Got chunk {}", chunk_count);
+        file.write_all(&chunk)?;
+    }
+
+    println!("Download complete!");
+    Ok(())
+}
+```
+
 ## Size Limits and Best Practices
 
 * **Maximum chunk size:** 4MB raw data (`Chunk::MAX_RAW_SIZE`)
 * **Content addressing:** Each chunk's address is the hash of its content
 * **Immutability:** Chunks cannot be modified once stored
 * **Batch operations:** Use `chunk_batch_upload()` for multiple chunks to reduce costs
+* **Streaming:** Use `data_stream_public()` or `data_stream()` (private data) for efficient large data transfers
 * **Caching:** Enable chunk caching for frequently accessed data
 * **Error handling:** Always handle network errors and size limit violations
