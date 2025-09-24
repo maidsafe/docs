@@ -2,10 +2,10 @@
 
 This guide will help you get started with building apps with Autonomi starting from scratch. This guide has 4 parts:
 
-1. [Prerequisites](build_apps_with_python.md#prerequisites)
-2. [Create a local testnet](build_apps_with_python.md#create-a-local-testnet)
-3. [Connect to the testnet with Python](build_apps_with_python.md#connect-to-the-testnet-with-python)
-4. [Upload and retrieve data with Python](build_apps_with_python.md#upload-and-retrieve-data-with-python)
+1. [Prerequisites](build-apps-with-python.md#prerequisites)
+2. [Create a local testnet](build-apps-with-python.md#create-a-local-testnet)
+3. [Connect to the testnet with Python](build-apps-with-python.md#connect-to-the-testnet-with-python)
+4. [Upload and retrieve data with Python](build-apps-with-python.md#upload-and-retrieve-data-with-python)
 
 {% hint style="info" %}
 This has guide has been tested on MacOS, it should work on Linux or other unixes as well, but the commands might be slightly different for Windows (unless you are using [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)).
@@ -83,13 +83,13 @@ touch main.py
 Open up the file in your favorite editor and add the following code:
 
 ```python
-from autonomi_client import Client, Network, Wallet
+from autonomi_client import Client, EVMNetwork, Wallet
 import asyncio
 
 async def main():
     # Initialize a wallet with the testnet private key
     private_key = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
-    network = Network(True)
+    network = EVMNetwork(True)
     wallet = Wallet.new_from_private_key(network, private_key)
     print(f"Wallet address: {wallet.address()}")
     print(f"Wallet balance: {await wallet.balance()}")
@@ -123,13 +123,13 @@ Congrats! You've just connected to the testnet! 🎉
 Next up let's upload some data to the testnet and retrieve it. We will be using the Autonomi data API for this. Expanding upon our previous work, change the `main.py` file to the following:
 
 ```python
-from autonomi_client import Client, Network, Wallet, PaymentOption
+from autonomi_client import Client, EVMNetwork, Wallet, PaymentOption
 import asyncio
 
 async def main():
     # Initialize a wallet with the testnet private key
     private_key = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
-    network = Network(True)
+    network = EVMNetwork(True)
     wallet = Wallet.new_from_private_key(network, private_key)
     print(f"Wallet address: {wallet.address()}")
     print(f"Wallet balance: {await wallet.balance()}")
@@ -160,6 +160,79 @@ asyncio.run(main())
 > For private data, use the `data_put` and `data_get` methods instead!
 
 Congrats! If you got this far, you are ready to start building apps that can store data on Autonomi! 🎉
+
+## Working with Registers
+
+Registers are mutable data structures that allow you to store updateable content with versioned history. Here's how to use them:
+
+```python
+from autonomi_client import Client, EVMNetwork, Wallet, PaymentOption, SecretKey
+import asyncio
+
+async def register_example():
+    # Initialize client and wallet (same as before)
+    private_key = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
+    network = EVMNetwork(True)
+    wallet = Wallet.new_from_private_key(network, private_key)
+    client = await Client.init_local()
+    payment_option = PaymentOption.wallet(wallet)
+    
+    # Generate keys for register
+    main_key = SecretKey.random()
+    register_key = Client.register_key_from_name(main_key, "my-app-config")
+    
+    # Create register content (max 32 bytes)
+    initial_config = Client.register_value_from_bytes(b"version: 1.0")
+    
+    # Check cost and create register
+    cost = await client.register_cost(register_key.public_key())
+    print(f"Register creation cost: {cost} AttoTokens")
+    
+    creation_cost, address = await client.register_create(
+        register_key, initial_config, payment_option)
+    print(f"Register created at: {address.to_hex()}")
+    
+    # Wait for network replication
+    await asyncio.sleep(5)
+    
+    # Read current value
+    current_value = await client.register_get(address)
+    print(f"Current config: {current_value}")
+    
+    # Update the register
+    updated_config = Client.register_value_from_bytes(b"version: 1.1")
+    update_cost = await client.register_update(register_key, updated_config, payment_option)
+    print(f"Update cost: {update_cost} AttoTokens")
+    
+    # Wait for replication
+    await asyncio.sleep(5)
+    
+    # Get complete history
+    history = client.register_history(address)
+    all_versions = await history.collect()
+    print(f"Config history ({len(all_versions)} versions):")
+    for i, version in enumerate(all_versions):
+        print(f"  {i}: {version}")
+
+# Run the example
+asyncio.run(register_example())
+```
+
+### Key Register Features:
+
+* **Mutable**: Can be updated with new content while preserving history
+* **Versioned**: All previous versions are permanently accessible
+* **Owned**: Only the key holder can update the register
+* **32-byte limit**: Each register value is limited to 32 bytes
+* **Paid updates**: Both creation and updates require payment
+
+### Common Register Use Cases:
+
+1. **Application Configuration**: Store app settings that need updates
+2. **Status Tracking**: Maintain current state with full history
+3. **Version Control**: Track document versions
+4. **Counters**: Implement distributed counters
+5. **Metadata**: Store changeable file or app metadata
 
 ## Going further
 
@@ -204,5 +277,5 @@ rm -rf $HOME/.local/share/autonomi/; cargo run --bin evm-testnet& cargo run --bi
 ```
 
 {% hint style="info" %}
-Note: this has to be run in the autonomi directory (the one we cloned in [part 1](build_apps_with_python.md#create-a-local-testnet))
+Note: this has to be run in the autonomi directory (the one we cloned in [part 1](build-apps-with-python.md#create-a-local-testnet))
 {% endhint %}

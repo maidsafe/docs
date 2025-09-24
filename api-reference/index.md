@@ -13,7 +13,6 @@ The [Autonomi Client API](autonomi-client/) is the core library for interacting 
 * [Scratchpad Operations](autonomi-client/scratchpad.md)
 * [Register Operations](autonomi-client/register.md)
 * [Vault Operations](autonomi-client/vault.md)
-* [File System Operations](autonomi-client/files.md)
 * [BLS Cryptographic Keys Handling](../core-concepts/bls-keys.md)
 
 ## Node API

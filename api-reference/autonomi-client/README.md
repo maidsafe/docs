@@ -38,7 +38,7 @@ Depending on your learning style, you can choose to get started with the client 
 {% endtab %}
 
 {% tab title="Python" %}
-[Build Autonomi apps with Python Starting From Scratch](../../how-to-guides/build_apps_with_python.md)
+[Build Autonomi apps with Python Starting From Scratch](../../how-to-guides/build-apps-with-python.md)
 {% endtab %}
 {% endtabs %}
 
