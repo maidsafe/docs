@@ -170,48 +170,77 @@ Estimates the storage cost for a new scratchpad.
 {% tabs %}
 {% tab title="Rust" %}
 ```rust
-use autonomi::{Client, SecretKey, AttoTokens, Bytes};
 use autonomi::client::payment::PaymentOption;
+use autonomi::{Bytes, Client, SecretKey};
+use evmlib::{Network, wallet::Wallet};
+
+// Helper function to create a funded wallet
+fn get_funded_wallet() -> Result<Wallet, Box<dyn std::error::Error>> {
+    let private_key = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
+    // Use the same network type as the client (EvmNetwork::new(true) in init_local)
+    let network = Network::new(true)?;
+    let wallet = Wallet::new_from_private_key(network, private_key)?;
+    Ok(wallet)
+}
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    scratchpad_example().await
+}
 
 async fn scratchpad_example() -> Result<(), Box<dyn std::error::Error>> {
     // Initialize client and wallet
     let client = Client::init_local().await?;
-    let wallet = get_funded_wallet();
+    let wallet = get_funded_wallet()?;
     let payment = PaymentOption::from(&wallet);
 
     // Create secret key for scratchpad
     let key = SecretKey::random();
     let public_key = key.public_key();
-    
+
     // Check cost
-    let cost = client.scratchpad_cost(&public_key).await?;
-    println!("Scratchpad cost: {}", cost);
+    let estimated_cost = client.scratchpad_cost(&public_key).await?;
+    println!("Estimated scratchpad cost: {estimated_cost}");
 
     // Create scratchpad
     let content_type = 42;
     let initial_data = Bytes::from("Hello, Autonomi!");
-    let (cost, addr) = client
+    let (actual_cost, addr) = client
         .scratchpad_create(&key, content_type, &initial_data, payment.clone())
         .await?;
-    println!("Created at {:?}, cost: {}", addr, cost);
+    println!("Created at {addr:?}");
+    println!("Actual cost: {actual_cost}");
 
     // Get scratchpad
     let scratchpad = client.scratchpad_get(&addr).await?;
     assert_eq!(scratchpad.counter(), 0);
-    
+    println!(
+        "Retrieved scratchpad with counter: {}",
+        scratchpad.counter()
+    );
+
     // Decrypt content
     let decrypted = scratchpad.decrypt_data(&key)?;
     assert_eq!(decrypted, initial_data);
+    println!("✓ Decrypted content matches initial data");
 
     // Update scratchpad
     let new_data = Bytes::from("Updated content!");
-    client.scratchpad_update(&key, content_type, &new_data).await?;
+    client
+        .scratchpad_update(&key, content_type, &new_data)
+        .await?;
+    println!("✓ Scratchpad updated successfully");
 
     // Get updated scratchpad
     let updated = client.scratchpad_get(&addr).await?;
     assert_eq!(updated.counter(), 1);
     let updated_content = updated.decrypt_data(&key)?;
     assert_eq!(updated_content, new_data);
+    println!(
+        "✓ Updated scratchpad verified with counter: {}",
+        updated.counter()
+    );
+    println!("✓ All scratchpad operations completed successfully!");
 
     Ok(())
 }
@@ -221,12 +250,13 @@ async fn scratchpad_example() -> Result<(), Box<dyn std::error::Error>> {
 {% tab title="Python" %}
 ```python
 import asyncio
-from autonomi_client import Client, SecretKey, Wallet, PaymentOption, Network
+from autonomi_client import Client, SecretKey, Wallet, PaymentOption, EVMNetwork
 
 async def scratchpad_example():
     # Initialize client and wallet
     client = await Client.init_local()
-    network = Network(True)
+    network = EVMNetwork(True)  # Use testnet for local development
+    # For mainnet use: EVMNetwork(False)
     private_key = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
     wallet = Wallet.new_from_private_key(network, private_key)
     payment = PaymentOption.wallet(wallet)
@@ -237,32 +267,38 @@ async def scratchpad_example():
 
     try:
         # Check cost
-        cost = await client.scratchpad_cost(public_key)
-        print(f"Scratchpad cost: {cost}")
+        estimated_cost = await client.scratchpad_cost(public_key)
+        print(f"Estimated scratchpad cost: {estimated_cost}")
 
         # Create scratchpad
         content_type = 42
         initial_data = b"Hello, Autonomi!"
-        cost, addr = await client.scratchpad_create(key, content_type, initial_data, payment)
-        print(f"Created at {addr.hex}, cost: {cost}")
+        actual_cost, addr = await client.scratchpad_create(key, content_type, initial_data, payment)
+        print(f"Created at {addr.hex}")
+        print(f"Actual cost: {actual_cost}")
 
         # Get scratchpad
         scratchpad = await client.scratchpad_get(addr)
         assert scratchpad.counter() == 0
+        print(f"Retrieved scratchpad with counter: {scratchpad.counter()}")
         
         # Decrypt content
         decrypted = scratchpad.decrypt_data(key)
         assert decrypted == initial_data
+        print("✓ Decrypted content matches initial data")
 
         # Update scratchpad (free)
         new_data = b"Updated content!"
         await client.scratchpad_update(key, content_type, new_data)
+        print("✓ Scratchpad updated successfully")
 
         # Get updated scratchpad
         updated = await client.scratchpad_get(addr)
         assert updated.counter() == 1
         updated_content = updated.decrypt_data(key)
         assert updated_content == new_data
+        print(f"✓ Updated scratchpad verified with counter: {updated.counter()}")
+        print("✓ All scratchpad operations completed successfully!")
 
     except Exception as e:
         print(f"Error: {e}")
@@ -279,7 +315,8 @@ async function scratchpadExample() {
     try {
         // Initialize client and wallet
         const client = await Client.initLocal();
-        const network = new Network(true);
+        const network = new Network(true);  // Use testnet for local development
+        // For mainnet use: new Network(false)
         const privateKey = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
         const wallet = Wallet.newFromPrivateKey(network, privateKey);
         const payment = PaymentOption.fromWallet(wallet);
@@ -289,34 +326,38 @@ async function scratchpadExample() {
         const publicKey = key.publicKey();
 
         // Check cost
-        const cost = await client.scratchpadCost(publicKey);
-        console.log(`Scratchpad cost: ${cost}`);
+        const estimatedCost = await client.scratchpadCost(publicKey);
+        console.log(`Estimated scratchpad cost: ${estimatedCost}`);
 
         // Create scratchpad
         const contentType = 42n;
         const initialData = Buffer.from("Hello, Autonomi!");
-        const { cost: createCost, addr } = await client.scratchpadCreate(key, contentType, initialData, payment);
-        console.log(`Created at ${addr.toHex()}, cost: ${createCost}`);
+        const { cost: actualCost, addr } = await client.scratchpadCreate(key, contentType, initialData, payment);
+        console.log(`Created at ${addr.toHex()}`);
+        console.log(`Actual cost: ${actualCost}`);
 
         // Get scratchpad
         const scratchpad = await client.scratchpadGet(addr);
         console.assert(scratchpad.counter() === 0n);
+        console.log(`Retrieved scratchpad with counter: ${scratchpad.counter()}`);
         
         // Decrypt content
         const decrypted = scratchpad.decryptData(key);
         console.assert(Buffer.compare(decrypted, initialData) === 0);
+        console.log("✓ Decrypted content matches initial data");
 
         // Update scratchpad (free)
         const newData = Buffer.from("Updated content!");
         await client.scratchpadUpdate(key, contentType, newData);
+        console.log("✓ Scratchpad updated successfully");
 
         // Get updated scratchpad
         const updated = await client.scratchpadGet(addr);
         console.assert(updated.counter() === 1n);
         const updatedContent = updated.decryptData(key);
         console.assert(Buffer.compare(updatedContent, newData) === 0);
-
-        console.log("Scratchpad operations completed successfully!");
+        console.log(`✓ Updated scratchpad verified with counter: ${updated.counter()}`);
+        console.log("✓ All scratchpad operations completed successfully!");
 
     } catch (error) {
         console.error('Error:', error.message);
